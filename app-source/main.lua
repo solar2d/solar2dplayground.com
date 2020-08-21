@@ -4,13 +4,16 @@ timer = require( "newTimer" )
 
 require("disabledAPI")
 local lfs = require( "lfs" )
-local inputCode
+local inputCode, printToBrowser
 local environment = system.getInfo( "environment" )
 if environment ~= "simulator" then
     inputCode = require( "inputCode" )
+    printToBrowser = require( "printToBrowser" )
 end
 local newDisplay = require( "newDisplay" )
 local printToDisplay = require( "printToDisplay" )
+local fontLoader = require( "spyricFontLoader" )
+fontLoader.preload( "fonts" ) 
 
 local instructions, logo
 local btn, imageList = {}, {}
@@ -21,19 +24,7 @@ local consoleOpen = false
 local imagesOpen = false
 local font = "fonts/OpenSansRegular.ttf"
 
--- TODO: add custom fonts, audio effects/bg music
--- TODO: add fontloader plugin and preload all fonts.
-
--- Temporarily preload the currently used fonts before adding fontloader.
-local temp = display.newText( "", 0, 0, font, 20 )
-temp:removeSelf()
-temp = nil
-temp = display.newText( "", 0, 0, native.systemFont, 20 )
-temp:removeSelf()
-temp = nil
-temp = display.newText( "", 0, 0, native.systemFontBold, 20 )
-temp:removeSelf()
-temp = nil
+-- TODO: add more custom fonts, audio effects/bg music
 
 -- groupGlobal contains all user generated display objects/groups
 local groupGlobal = display.newGroup()
@@ -321,12 +312,23 @@ local function runCode( event )
         clearEverything()
         local code = inputCode and inputCode.getCode()
         if code then -- No code will be returned if the app is run directly and not via an Iframe.
-            assert(loadstring( code ))()
+            local valid, errorMessage = pcall(loadstring(code))
+            if not valid then
+                local _, loc = string.find(errorMessage, '"]:%S')
+                if loc then errorMessage = "Error on line " .. errorMessage:sub(loc) end
+                printToBrowser.alert(errorMessage)
+                print(errorMessage)
+            end
         else
             print( "WARNING: In order to run this project, you need to build it for HTML5 and deploy it via Iframe." )
         end
     end
     return true
+end
+
+-- Listen for sample project button presses from the website.
+local function projectListener()
+    runCode({phase="began"}) 
 end
 
 imageList[1] = display.newRoundedRect( groupWindow, 480, 320, 800, 600, 8 )
@@ -394,3 +396,5 @@ instructions.y = btn[1].y + 12
 
 logo = display.newImageRect( groupButtons, "ui/logo.png", 640, 110 )
 logo.x, logo.y = 480, 320
+
+if environment ~= "simulator" then inputCode.addEventListener( projectListener ) end

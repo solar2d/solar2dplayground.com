@@ -1,6 +1,4 @@
 display.setStatusBar( display.HiddenStatusBar )
-timer = nil -- Using "newTimer" temporarily until PR is committed to Solar2D core.
-timer = require( "newTimer" )
 
 require("disabledAPI")
 local lfs = require( "lfs" )
@@ -190,7 +188,7 @@ local function clearEverything()
     if _pState ~= "stop" then
         physics.stop()
     end
-    transition.pause()
+    transition.cancelAll()
     timer.cancelAll()
     -- Start by removing Runtime listeners.
     for i = #_runtimeListeners, 1, -1 do
@@ -215,8 +213,11 @@ local function clearEverything()
     end
     -- Reset any possible changes to the global tables/libraries.
     for index, value in pairs( _origGlobals ) do
-        -- "print" will be may be altered due to printToDisplay plugin, so ignore it.
-        if index ~= "print" and value ~= _G[index] then
+        -- "print" is already customised via printToDisplay plugin,
+        -- so it will be reset via the plugin unlike other globals.
+        if index == "print" then
+            printToDisplay.resetPrint()
+        elseif value ~= _G[index] then
             _G[index] = value
         end
     end
@@ -312,13 +313,13 @@ local function runCode( event )
         clearEverything()
         local code = inputCode and inputCode.getCode()
         if code then -- No code will be returned if the app is run directly and not via an Iframe.
-            local valid, errorMessage = pcall(loadstring(code))
-            if not valid then
-                local _, loc = string.find(errorMessage, '"]:%S')
-                if loc then errorMessage = "Error on line " .. errorMessage:sub(loc) end
-                printToBrowser.alert(errorMessage)
-                print(errorMessage)
-            end
+            ---------------------------------------------------------------------------------------------------------------------------------
+            -- NB!  "pcall" and "xpcall" aren't used here by design. While we could avoid crashes caused due to errors in the initial code,
+            --      we won't be able to obtain a useful stack trace by using the aforementioned functions. Instead, by letting the app crash,
+            --      Solar2D will send a more descriptive stack trace to the browser (one that is of actual use to the user). This will also
+            --      make the crashes behave similarly, which improves the predictability of the Playground's behaviour.
+            loadstring(code)()
+            ---------------------------------------------------------------------------------------------------------------------------------
         else
             print( "WARNING: In order to run this project, you need to build it for HTML5 and deploy it via Iframe." )
         end
@@ -328,7 +329,7 @@ end
 
 -- Listen for sample project button presses from the website.
 local function projectListener()
-    runCode({phase="began"}) 
+    runCode({phase="began"})
 end
 
 imageList[1] = display.newRoundedRect( groupWindow, 480, 320, 800, 600, 8 )

@@ -26,41 +26,18 @@
     <meta name="theme-color" content="#ffffff">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="./js/codemirror/lib/codemirror.js"></script>
-    <script src="./js/codemirror/lua.js"></script>
-    <script src="./js/codemirror/simplescrollbars.js"></script>
+    <script src="/js/codemirror/lib/codemirror.js"></script>
+    <script src="/js/codemirror/lua.js"></script>
+    <script src="/js/codemirror/simplescrollbars.js"></script>
+    <link href="/js/codemirror/dracula.css" rel="stylesheet"/>
+    <link href="/js/codemirror/lib/codemirror.css" rel="stylesheet"/>
     <script src="./js/detectMobile.js"></script>
     <script src="./js/fileHandler.js"></script>
     <script src="./js/handleCode.js"></script>
     <script src="./js/panel.js"></script>
-    <link href="./js/codemirror/dracula.css" rel="stylesheet"/>
-    <link href="./js/codemirror/lib/codemirror.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     
-    <script>
-        // Accessing "https://www.solar2dplayground.com/?beta" will load the beta version of the playground app.
-        var isBeta = (window.location.search == "?beta") ? true : false;
-        var whichPlayground = isBeta ? "app-beta/index.html" : "app/index.html";
-        
-        function isMobile() {
-            var gotTouchEvent = false;
-            try {
-                document.createEvent("TouchEvent");
-                gotTouchEvent = true;
-            } catch(e) {
-                return false;
-            }
-            // Try to check that the device isn't a touch screen enabled Windows.
-            if (gotTouchEvent) {
-                var windowsVersions = ['Win32', 'Win64', 'Windows', 'WinCE'];
-                if (windowsVersions.indexOf(window.navigator.platform) !== -1) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    </script>
     <title>Solar2D Playground</title>
 </head>
 
@@ -70,10 +47,10 @@
             <div id="wrapper">
                 <nav>
                     <ul class="menu">
-                        <li class="logo"><a href="#"><img class="logo-image" src="img/logo.png" alt="Solar2D Playground"></a></li>
+                        <li class="logo"><img class="logo-image" src="/img/logo.png" alt="Solar2D Playground"></li>
                         <div id="break"></div>
-                        <li class="item"><button id="code" class="button-header" onclick="togglePanel('code')">Code</button></li>
-                        <li class="item"><button id="info" class="button-header" onclick="togglePanel('info')">Info</button></li>
+                        <li class="item"><a id="code" title="Code panel" href="#" onclick="togglePanel('code');return false;">Code</a></li>
+                        <li class="item"><a id="info" title="Info panel" href="#" onclick="togglePanel('info');return false;">Info</a></li>
                         <li class="item"><a href="https://docs.coronalabs.com/" target="_blank">Solar2D Docs</a></li>
                         <li class="item last"><a href="https://solar2d.com/" target="_blank">Get Solar2D</a></li>
                     </ul>
@@ -113,7 +90,7 @@
                         <p>You can find more of my personal projects over at my code portfolio site: <a href="https://www.xedur.com">www.xedur.com</a>.
                             I work on all sorts of interesting projects, as well as plugins for Solar2D, in my free time.
                             If you like what I'm doing and wish to support me, then <a href="https://ko-fi.com/xedur">consider buying me a cup of coffee over at Ko-fi</a>.</p>
-                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="./img/support-me.svg" max-width="306" width="100%"></a></span></button>
+                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="/img/support-me.svg" max-width="306" width="100%"></a></span></button>
                         <div id="line"></div>
                         <h2>Playground limitations & Solar2D:</h2>
                         <p>For convenience sake, and due to issues like CORS, Solar2D Playground does not support network requests or sockets.
@@ -131,17 +108,27 @@
                 </div>
                 
                 <div class="column-right">
-                    <div class="iframe-container">
-                        <iframe id="app-frame"></iframe>
+                    <div id="app" class="iframe-container">
+                        <iframe id="app-frame" scrolling="no" src="app/index.html"></iframe>
+                        <button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>
                     </div>
-                </div>     
+                </div>
+                
+                <div class="overlay">
+                    <p id="widthPrompt">Solar2D Playground requires a minimum window width of 960 pixels.</p>
+                </div>
                 
                 <script>
-                    document.getElementById('app-frame').src = whichPlayground;
                     var filenameField = document.getElementById( "projectName" );
+                    var startButton = document.getElementById("startButton");
+                    var widthPrompt = document.getElementById("widthPrompt");
+                    var widthInitial = document.documentElement.clientWidth;
+                    var isMobileDevice = isMobile();
                     var customProjectCount = 5;
                     var projectFilename = [];
                     var customProject = [];
+                    var widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
+                    var hasPlaygroundCrashed = (widthInitial > widthCrashThreshold) ? false : true; // Playground won't autoload if "crashed".
                     var isCustomProject = false;
                     var hasLoaded = false;
                     var activeCustomProject;
@@ -150,19 +137,73 @@
                     var appModule;
                     var getHeight;
                     var filename;
+                    var loader;
                     
-                    if (isMobile()) {
+                    function restartPlayground(text) {
+                        window.removeEventListener("resize", windowResize);
+                        hasLoaded = false;
+                        
+                        // Clean up the error message by removing references to Lua's loadstring().
+                        let start, end;
+                        do {
+                            start = text.indexOf("[string");
+                            if (start != -1) {
+                                end = text.indexOf("]:",start);
+                                if (end != -1) {
+                                    let pre = text.substring(0,start);
+                                    text = pre + "line " + text.substring(end+2);
+                                }
+                            }
+                        }
+                        while (start != -1);
+                        // Solar2D seems to add a reference to a function on line 189 by default.
+                        // If it is there, then just remove it as it doesn't add value to anyone.
+                        let f189 = text.indexOf("?: in function <?:189>");
+                        if (f189 != -1) { text = text.substring(0,f189-1); } // also remove the weird HT symbol.
+                        
+                        let msg = text + "\nThe Playground will now restart."
+                        console.error(msg);
+                        if (confirm(msg)) {
+                            hasPlaygroundCrashed = false;
+                        } else {
+                            hasPlaygroundCrashed = true;
+                        }
+                        document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="app/index.html"></iframe><button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>';
+                        if (hasPlaygroundCrashed) {
+                            startButton = document.getElementById("startButton");
+                            startButton.classList.remove("hidden");
+                        } else {
+                            loader = setInterval(checkLoaded, 100);
+                        }
+                    }
+                    
+                    function showDisclaimer(which) {
                         var disclaimer = document.getElementById("disclaimer");
-                        disclaimer.innerHTML = "You seem to be on a mobile device. This website is not designed for mobile devices and it may not run correctly, or at all, on your device.";
+                        if (which == "mobile") {
+                            disclaimer.innerHTML = "You seem to be on a mobile device. This website is not designed for mobile devices and it may not run correctly, or at all, on your device.";
+                        } else {
+                            disclaimer.innerHTML = "There was a problem with loading the sample projects. Try again later.";
+                            document.getElementById("sample-buttons").innerHTML = "<p>Failed to load sample projects.</p>";
+                            document.getElementById("sample-buttons").style.fontWeight = "bold";
+                        }
                         disclaimer.style.padding = "20px";
                         disclaimer.style.margin = "0px";
                         disclaimer.style.background = "#d10000";
                         disclaimer.style.color = "white";
                         disclaimer.classList.remove("hidden");
                     }
-                    // Match the code editor's height with the app's height.
-                    function resizeEditor() {
+                    
+                    // Update the widthPrompt text and catch the code editor's height with the app's height.
+                    function windowResize() {
+                        let width = document.documentElement.clientWidth;
+                        widthPrompt.innerHTML = '<div class="overlay"><p id="widthPrompt">Solar2D Playground requires a minimum window width of 960 pixels.<br><br>Your current window width is ' + width + 'pixels.</p></div>'
                         editor.setSize(null,getHeight());
+                    }
+                    
+                    // Check if the user is on a mobile device or not, or if the widthCrashThreshold has been triggered.
+                    if (isMobileDevice || hasPlaygroundCrashed) {
+                        startButton.classList.remove("hidden");
+                        if (isMobileDevice) { showDisclaimer("mobile") }
                     }
                     
                     function addCustomProjects() {
@@ -209,30 +250,29 @@
                         }
                     });
                     
+                    // Since the Playground isn't fully supported on mobile devices, user has to opt to start it manually.
+                    // The Playground may also need to be restarted manually if the user doesn't let it restart it automatically.
+                    function manualStart() {
+                        startButton.classList.add("hidden");
+                        frames[0].startLoading();
+                        loader = setInterval(checkLoaded, 100);
+                    }
+                    
                     // Give the editor an initial height based on the height of the window and aspect ratio of the app.
-                    // The more accurate height will be later assigned via resizeEditor when the app has loaded.
-                    var widthInitial = document.documentElement.clientWidth;
+                    // The more accurate height will be later assigned via windowResize when the app has loaded.
                     widthInitial = widthInitial*0.5*0.6666;
                     editor.setSize(null, Math.min(widthInitial,960));
+                    widthPrompt.innerHTML = '<div class="overlay"><p id="widthPrompt">Solar2D Playground requires a minimum window width of 960 pixels.<br><br>Your current window width is ' + widthInitial + 'pixels.</p></div>'
 
                     $.ajax({
-                        url: "./demos/demos.json",
+                        url: "/demos/demos.json",
                         type: "HEAD",
                         error: function() {
-                            var disclaimer = document.getElementById("disclaimer");
-                            disclaimer.innerHTML = "There was a problem with loading the sample projects. Try again later.";
-                            disclaimer.style.padding = "20px";
-                            disclaimer.style.margin = "0px";
-                            disclaimer.style.background = "#d10000";
-                            disclaimer.style.color = "white";
-                            disclaimer.classList.remove("hidden");
-                            document.getElementById("sample-buttons").innerHTML = "<p>Failed to load sample projects.</p>";
-                            document.getElementById("sample-buttons").style.fontWeight = "bold";
-                            
+                            showDisclaimer("error")
                             addCustomProjects();
                         },
                         success: function() {
-                            $.getJSON( "./demos/demos.json", function(json) {
+                            $.getJSON( "/demos/demos.json", function(json) {
                                 sampleProject = json;
                                 
                                 var buttonsSample = "";
@@ -251,11 +291,12 @@
                     // It's unclear as to when the app has finished loading and when Module and its functions are
                     // available, so keep checking until they are, and then finalise the site's functionality.
                     function finalise() {
+                        hasPlaygroundCrashed = false;
                         hasLoaded = true;
                         appModule = document.getElementById("app-frame").contentWindow.Module;
                         getHeight = appModule.cwrap( "jsContextGetWindowHeight" );
                         editor.setSize(null,getHeight());
-                        window.addEventListener("resize", resizeEditor);
+                        window.addEventListener("resize", windowResize);
                     }
                     function checkLoaded() {
                         try {
@@ -268,7 +309,7 @@
                             // console.log(err);
                         }
                     }
-                    var loader = setInterval(checkLoaded, 100);
+                    if (!isMobileDevice && !hasPlaygroundCrashed) { loader = setInterval(checkLoaded, 100); }
                     
                     // Add listeners for file import/export functions.
                     document.getElementById("export").addEventListener("click", downloadFile)

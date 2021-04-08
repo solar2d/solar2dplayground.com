@@ -77,6 +77,8 @@
                         <input type="button" id="export" class="button-code" value="Download active project"/>
                         <input type="text" id="projectName" value="solar2dplayground" oninput="filenameOnInput()" onchange="filenameOnChange()" disabled>
                         <div id="line"></div>
+                        <p>Keyboard shortcuts: <b>Shift+R</b>: runs your code or restarts the app if it has crashed. <b>Shift+S</b>: downloads the active project file.</p>
+                        <div id="line"></div>
                     </div>
                 </div>
                 
@@ -91,7 +93,7 @@
                         <p>You can find more of my personal game related projects over at my portfolio site: <a href="https://www.xedur.com">www.xedur.com</a>.
                             I work on all sorts of interesting projects in my free time, especially for Solar2D.
                             If you like what I'm doing, then <a href="https://ko-fi.com/xedur">consider buying me a cup of coffee over at Ko-fi</a>.</p>
-                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="/img/support-me.svg" max-width="306" width="100%"></a></span></button>
+                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="/img/support-me-txt.png"></a></span></button>
                         <div id="line"></div>
                         <h2>Playground limitations & Solar2D:</h2>
                         <p>Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. This website is also hosted on GitHub Pages, which poses issues with CORS, etc. 
@@ -127,9 +129,9 @@
                     var customProject = [];
                     var widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
                     var hasPlaygroundCrashed = (window.innerWidth > widthCrashThreshold) ? false : true; // Playground won't autoload if "crashed".
+                    var isPlaygroundStarting = false;
                     var relaunchOnMobile = false;
                     var isCustomProject = false;
-                    var hasLoaded = false;
                     var activeCustomProject;
                     var activeProject;
                     var sampleProject;
@@ -140,7 +142,6 @@
                     
                     function restartPlayground(text) {
                         window.removeEventListener("resize", windowResize);
-                        hasLoaded = false;
                         
                         // Clean up the error message by removing references to Lua's loadstring().
                         let firstChange = true;
@@ -181,6 +182,7 @@
                             startButton = document.getElementById("startButton");
                             startButton.classList.remove("hidden");
                         } else {
+                            isPlaygroundStarting = true;
                             loader = setInterval(checkLoaded, 100);
                         }
                     }
@@ -275,9 +277,12 @@
                     // so to avoid any hangups or crashes on page load, the user needs to now explicitly start the app. This
                     // also applies to restarting the Playground manually if the user doesn't choose automatic restart.
                     function manualStart() {
-                        startButton.classList.add("hidden");
-                        frames[0].startLoading();
-                        loader = setInterval(checkLoaded, 100);
+                        if (!isPlaygroundStarting) {
+                            isPlaygroundStarting = true;
+                            startButton.classList.add("hidden");
+                            frames[0].startLoading();
+                            loader = setInterval(checkLoaded, 100);
+                        }
                     }
                     
                     // Give the editor an initial height based on the height of the window and aspect ratio of the app.
@@ -312,7 +317,7 @@
                     // available, so keep checking until they are, and then finalise the site's functionality.
                     function finalise() {
                         hasPlaygroundCrashed = false;
-                        hasLoaded = true;
+                        isPlaygroundStarting = false;
                         appModule = document.getElementById("app-frame").contentWindow.Module;
                         getHeight = appModule.cwrap( "jsContextGetWindowHeight" );
                         editor.setSize(null,getHeight());
@@ -329,11 +334,32 @@
                             console.log(err);
                         }
                     }
-                    if (!isMobileDevice && !hasPlaygroundCrashed) { loader = setInterval(checkLoaded, 100); }
+                    if (!isMobileDevice && !hasPlaygroundCrashed) {
+                        isPlaygroundStarting = true;
+                        loader = setInterval(checkLoaded, 100);
+                    }
                     
                     // Add listeners for file import/export functions.
                     document.getElementById("export").addEventListener("click", downloadFile)
                     document.getElementById('import').addEventListener('change', uploadFile)
+                    window.addEventListener("keyup", function(event) {
+                        const gotKey = (["s", "r"].indexOf(event.key) > -1)
+                        if (event.shiftKey && (gotKey || (event.keyCode !== undefined && [82, 83].indexOf(event.keyCode) > -1))) {
+                            event.preventDefault(); // Just in case some browser has a shift+r/s keyboard shortcut.
+                            const key = gotKey ? event.key : (event.keyCode == 82) ? "r" : "s";
+                            // Run the code or restart Playground if it has crashed.
+                            if (key == "r") {
+                                if (hasPlaygroundCrashed) {
+                                    manualStart();
+                                } else if (!isPlaygroundStarting) {
+                                    frames[0].playgroundApp.dispatchEvent( new CustomEvent( 'inputCode' ) )
+                                }
+                            // Download the current project file.
+                            } else {
+                                downloadFile();
+                            }
+                        }
+                    }, false );
                 </script>
             </div>
         </main>

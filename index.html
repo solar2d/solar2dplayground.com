@@ -7,35 +7,35 @@
     <meta name="description" content="Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.">
     <meta name="author" content="Eetu Rantanen">
     
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="./apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="./android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="./ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/js/codemirror/lib/codemirror.js"></script>
-    <script src="/js/codemirror/lua.js"></script>
-    <script src="/js/codemirror/simplescrollbars.js"></script>
-    <link href="/js/codemirror/dracula.css" rel="stylesheet"/>
-    <link href="/js/codemirror/lib/codemirror.css" rel="stylesheet"/>
+    <script src="./js/codemirror/lib/codemirror.js"></script>
+    <script src="./js/codemirror/lua.js"></script>
+    <script src="./js/codemirror/simplescrollbars.js"></script>
+    <link href="./js/codemirror/dracula.css" rel="stylesheet"/>
+    <link href="./js/codemirror/lib/codemirror.css" rel="stylesheet"/>
     <script src="./js/detectMobile.js"></script>
     <script src="./js/fileHandler.js"></script>
     <script src="./js/handleCode.js"></script>
     <script src="./js/panel.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     
     <title>Solar2D Playground</title>
@@ -47,7 +47,7 @@
             <div id="wrapper">
                 <nav>
                     <ul class="menu">
-                        <li class="logo"><img class="logo-image" src="/img/logo.png" alt="Solar2D Playground"></li>
+                        <li class="logo"><img class="logo-image" src="./img/logo.png" alt="Solar2D Playground"></li>
                         <div id="break"></div>
                         <li class="item"><a id="code" title="Code panel" href="#" onclick="togglePanel('code');return false;">Code</a></li>
                         <li class="item"><a id="info" title="Info panel" href="#" onclick="togglePanel('info');return false;">Info</a></li>
@@ -93,7 +93,7 @@
                         <p>You can find more of my personal game related projects over at my portfolio site: <a href="https://www.xedur.com">www.xedur.com</a>.
                             I work on all sorts of interesting projects in my free time, especially for Solar2D.
                             If you like what I'm doing, then <a href="https://ko-fi.com/xedur">consider buying me a cup of coffee over at Ko-fi</a>.</p>
-                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="/img/support-me-txt.png"></a></span></button>
+                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="./img/support-me-txt.png"></a></span></button>
                         <div id="line"></div>
                         <h2>Playground limitations & Solar2D:</h2>
                         <p>Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. This website is also hosted on GitHub Pages, which poses issues with CORS, etc. 
@@ -285,14 +285,14 @@
                     editor.setSize(null, Math.min(window.innerWidth*0.5*(2/3),960));
 
                     $.ajax({
-                        url: "/demos/demos.json",
+                        url: "./demos/demos.json",
                         type: "HEAD",
                         error: function() {
                             showDisclaimer("error")
                             addCustomProjects();
                         },
                         success: function() {
-                            $.getJSON( "/demos/demos.json", function(json) {
+                            $.getJSON( "./demos/demos.json", function(json) {
                                 sampleProject = json;
                                 
                                 var buttonsSample = "";

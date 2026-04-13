@@ -1,4 +1,4 @@
-window.versionInfo = 
+window.versionInfo =
 {
 	// Outputs the Solar2D build version to browser console when the playground launches.
 	output: function( buildVersion ){
@@ -12,14 +12,14 @@ window.versionInfo =
             'background: #ffb301; font: bold 16px Arial',
             'background: #57507f; font: bold 16px Arial',
             'font: bold 14px Arial; color: #FF6906',
-            'font: bold 12px Arial; color: #FFFFFF',
+            'font: bold 12px Arial',
         ];
 
-        console.log( '%c %c %c %c %c %c %c  SOLAR2D PLAYGROUND%c v' + buildVersion + '  %c %c %c %c %c %c %c',
+        console.log( '\n%c %c %c %c %c %c %c  SOLAR2D PLAYGROUND%c v' + buildVersion + '  %c %c %c %c %c %c %c\n',
             styles[0], styles[1], styles[2], styles[3], styles[4], styles[5], styles[6], styles[7],
             styles[0], styles[1], styles[2], styles[3], styles[4], styles[5], styles[6]
         );
-		
+
         console.log( "print() will output text here and in the in-app console." );
 	}
 };

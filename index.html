@@ -1,367 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="Solar2D, HTML5, Lua, gamedev, game development, open source, sandbox, playground, XeduR, Eetu Rantanen">
-    <meta name="description" content="Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.">
-    <meta name="author" content="Eetu Rantanen">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywords" content="Solar2D, HTML5, Lua, gamedev, game development, open source, sandbox, playground, XeduR, Eetu Rantanen">
+	<meta name="description" content="Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.">
+	<meta name="author" content="Eetu Rantanen">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="./apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="./apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="./apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="./apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="./apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="./apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="./apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="./apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="./android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="./favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="./ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+	<link rel="apple-touch-icon" sizes="57x57" href="./apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="./apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="./apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="./apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="./apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="./apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="./apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="./apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="./apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="./android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="./favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+	<link rel="manifest" href="./manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="./ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
 
-    <script src="./js/codemirror/lib/codemirror.js"></script>
-    <script src="./js/codemirror/lua.js"></script>
-    <script src="./js/codemirror/simplescrollbars.js"></script>
-    <link href="./js/codemirror/dracula.css" rel="stylesheet"/>
-    <link href="./js/codemirror/lib/codemirror.css" rel="stylesheet"/>
-    <script src="./js/detectMobile.js"></script>
-    <script src="./js/fileHandler.js"></script>
-    <script src="./js/handleCode.js"></script>
-    <script src="./js/panel.js"></script>
-    <link rel="stylesheet" type="text/css" href="./css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+	<script src="./js/codemirror/lib/codemirror.js"></script>
+	<script src="./js/codemirror/lua.js"></script>
+	<script src="./js/codemirror/simplescrollbars.js"></script>
+	<link href="./js/codemirror/dracula.css" rel="stylesheet"/>
+	<link href="./js/codemirror/lib/codemirror.css" rel="stylesheet"/>
+	<script src="./js/detectMobile.js"></script>
+	<script src="./js/fileHandler.js"></script>
+	<script src="./js/handleCode.js"></script>
+	<script src="./js/panel.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/styles.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
-    <title>Solar2D Playground</title>
+	<title>Solar2D Playground</title>
 </head>
 
 <body>
-    <div class="container">
-        <main>
-            <div id="wrapper">
-                <nav>
-                    <ul class="menu">
-                        <li class="logo"><img class="logo-image" src="./img/logo.png" alt="Solar2D Playground"></li>
-                        <div id="break"></div>
-                        <li class="item"><a id="code" title="Code panel" href="#" onclick="togglePanel('code');return false;">Code</a></li>
-                        <li class="item"><a id="info" title="Info panel" href="#" onclick="togglePanel('info');return false;">Info</a></li>
-                        <li class="item"><a href="https://docs.coronalabs.com/" target="_blank">Solar2D Docs</a></li>
-                        <li class="item last"><a href="https://solar2d.com/" target="_blank">Get Solar2D</a></li>
-                    </ul>
-                </nav>
+	<div class="container">
+		<main>
+			<div id="wrapper">
+				<nav>
+					<ul class="menu">
+						<li class="logo"><img class="logo-image" src="./img/logo.png" alt="Solar2D Playground"></li>
+						<div id="break"></div>
+						<li class="item"><a id="code" title="Code panel" href="#" onclick="togglePanel('code');return false;">Code</a></li>
+						<li class="item"><a id="info" title="Info panel" href="#" onclick="togglePanel('info');return false;">Info</a></li>
+						<li class="item"><a href="https://docs.coronalabs.com/" target="_blank">Solar2D Docs</a></li>
+						<li class="item last"><a href="https://solar2d.com/" target="_blank">Get Solar2D</a></li>
+					</ul>
+				</nav>
 
-        		<noscript><h4>JavaScript disabled. You must enable JavaScript to use the Playground.</h4></noscript>
-                <div class="mobile"><p class="hidden" id="disclaimer"></p></div>
+				<noscript><h4>JavaScript disabled. You must enable JavaScript to use the Playground.</h4></noscript>
+				<div class="mobile"><p class="hidden" id="disclaimer"></p></div>
 
-                <div id="panel-code" class="panel">
-                    <span onclick="closePanel('code')" class="close-button">x</span>
+				<div id="panel-code" class="panel">
+					<span onclick="closePanel('code')" class="close-button">x</span>
 
-                    <div class="segment">
-                        <div id="line"></div>
-                        <h2>Sample Projects:</h2>
-                        <p>Any changes you make to a sample project will be overwritten if you open another project. If you don't want to accidentally lose your progress, then you can copy the sample code to one of the custom projects below or start an entirely new custom project.</p>
-                        <div id="sample-buttons"></div>
-                        <div id="line"></div>
-                        <h2>Custom Projects:</h2>
-                        <p>You can create your own custom projects and save them, or any of the sample projects, to your computer at any time. In order to upload your projects to the Playground, you must first select one of the projects below to assign your project to.</p>
-                        <div id="line"></div>
-                        <div id="custom-buttons"></div>
-                        <input type="file" id="import" class="hidden" accept=".lua" disabled>
-                        <label for="import" id="button-import" class="button-code disabled" >Upload project</label>
-                        <input type="button" id="export" class="button-code" value="Download active project"/>
-                        <input type="text" id="projectName" value="solar2dplayground" oninput="filenameOnInput()" onchange="filenameOnChange()" disabled>
-                        <div id="line"></div>
-                        <p>Keyboard shortcuts: <b>Ctrl+Shift+R</b>: runs your code or restarts the app if it has crashed. <b>Ctrl+Shift+S</b>: downloads the active project file.</p>
-                        <div id="line"></div>
-                    </div>
-                </div>
+					<div class="segment">
+						<div id="line"></div>
+						<h2>Sample Projects:</h2>
+						<p>Any changes you make to a sample project will be overwritten if you open another project. If you don't want to accidentally lose your progress, then you can copy the sample code to one of the custom projects below or start an entirely new custom project.</p>
+						<div id="sample-buttons"></div>
+						<div id="line"></div>
+						<h2>Custom Projects:</h2>
+						<p>You can create your own custom projects and save them, or any of the sample projects, to your computer at any time. In order to upload your projects to the Playground, you must first select one of the projects below to assign your project to.</p>
+						<div id="line"></div>
+						<div id="custom-buttons"></div>
+						<input type="file" id="import" class="hidden" accept=".lua" disabled>
+						<label for="import" id="button-import" class="button-code disabled" >Upload project</label>
+						<input type="button" id="export" class="button-code" value="Download active project"/>
+						<input type="text" id="projectName" value="solar2dplayground" oninput="filenameOnInput()" onchange="filenameOnChange()" disabled>
+						<div id="line"></div>
+						<p>Keyboard shortcuts: <b>Ctrl+Shift+R</b>: runs your code or restarts the app if it has crashed. <b>Ctrl+Shift+S</b>: downloads the active project file.</p>
+						<div id="line"></div>
+					</div>
+				</div>
 
-                <div id="panel-info" class="panel">
-                    <span onclick="closePanel('info')" class="close-button">x</span>
+				<div id="panel-info" class="panel">
+					<span onclick="closePanel('info')" class="close-button">x</span>
 
-                    <div class="segment">
-                        <div id="line"></div>
-                        <h2>Solar2D Playground:</h2>
-                        <p>Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.</p>
-                        <p>This website was developed and is maintained by <a href="https://www.erantanen.com">Eetu Rantanen</a>.</p>
-                        <p>You can find more of my personal game related projects over at my portfolio site: <a href="https://www.xedur.com">www.xedur.com</a>.
-                            I work on all sorts of interesting projects in my free time, especially for Solar2D.
-                            If you like what I'm doing, then <a href="https://ko-fi.com/xedur">consider buying me a cup of coffee over at Ko-fi</a>.</p>
-                        <button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="./img/support-me-txt.png"></a></span></button>
-                        <div id="line"></div>
-                        <h2>Playground limitations & Solar2D:</h2>
-                        <p>Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. This website is also hosted on GitHub Pages, which poses issues with CORS, etc.
-                            This means that you are limited to only using the assets that are included in Solar2D Playground.</p>
-                        <p>If you wish to develop games and apps without limitations, then <a href="https://solar2d.com/" target="_blank">download Solar2D</a>, a fantastic, free, and open source game engine.</p>
-                        <p>Solar2D development is sponsored by its users. Support the project on <a href="https://github.com/sponsors/shchvova">GitHub Sponsors</a> or <a href="https://www.patreon.com/shchvova">Patreon</a>.</p>
-                        <div id="line"></div>
-                        <p>In true open source spirit, the entire <a href="https://github.com/XeduR/solar2dplayground.com">Solar2D Playground source</a> is available under the MIT License.</p>
-                        <div id="line"></div>
-                    </div>
-                </div>
+					<div class="segment">
+						<div id="line"></div>
+						<h2>Solar2D Playground:</h2>
+						<p>Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.</p>
+						<p>This website was developed and is maintained by <a href="https://www.erantanen.com">Eetu Rantanen</a>.</p>
+						<p>You can find more of my personal game related projects over at my portfolio site: <a href="https://www.xedur.com">www.xedur.com</a>.
+							I work on all sorts of interesting projects in my free time, especially for Solar2D.
+							If you like what I'm doing, then <a href="https://ko-fi.com/xedur">consider buying me a cup of coffee over at Ko-fi</a>.</p>
+						<button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="./img/support-me-txt.png"></a></span></button>
+						<div id="line"></div>
+						<h2>Playground limitations & Solar2D:</h2>
+						<p>Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. This website is also hosted on GitHub Pages, which poses issues with CORS, etc.
+							This means that you are limited to only using the assets that are included in Solar2D Playground.</p>
+						<p>If you wish to develop games and apps without limitations, then <a href="https://solar2d.com/" target="_blank">download Solar2D</a>, a fantastic, free, and open source game engine.</p>
+						<p>Solar2D development is sponsored by its users. Support the project on <a href="https://github.com/sponsors/shchvova">GitHub Sponsors</a> or <a href="https://www.patreon.com/shchvova">Patreon</a>.</p>
+						<div id="line"></div>
+						<p>In true open source spirit, the entire <a href="https://github.com/XeduR/solar2dplayground.com">Solar2D Playground source</a> is available under the MIT License.</p>
+						<div id="line"></div>
+					</div>
+				</div>
 
-                <div class="column-left">
-                    <textarea id="editor"></textarea>
-                </div>
+				<div class="column-left">
+					<textarea id="editor"></textarea>
+				</div>
 
-                <div class="column-right">
-                    <div id="app" class="iframe-container">
-                        <iframe id="app-frame" scrolling="no" src="app/index.html"></iframe>
-                        <button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>
-                    </div>
-                </div>
+				<div class="column-right">
+					<div id="app" class="iframe-container">
+						<iframe id="app-frame" scrolling="no" src="app/index.html"></iframe>
+						<button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>
+					</div>
+				</div>
 
-                <div class="overlay"><p id="widthPrompt"></p></div>
+				<div class="overlay"><p id="widthPrompt"></p></div>
 
-                <script>
-                    var filenameField = document.getElementById( "projectName" );
-                    var startButton = document.getElementById("startButton");
-                    var widthPrompt = document.getElementById("widthPrompt");
-                    var isMobileDevice = window.isMobile();
-                    var customProjectCount = 5;
-                    var projectFilename = [];
-                    var customProject = [];
-                    var widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
-                    var hasPlaygroundCrashed = (window.innerWidth > widthCrashThreshold) ? false : true; // Playground won't autoload if "crashed".
-                    var isPlaygroundStarting = false;
-                    var relaunchOnMobile = false;
-                    var isCustomProject = false;
-                    var activeCustomProject;
-                    var activeProject;
-                    var sampleProject;
-                    var filename;
-                    var loader;
+				<script>
+					var filenameField = document.getElementById( "projectName" );
+					var startButton = document.getElementById("startButton");
+					var widthPrompt = document.getElementById("widthPrompt");
+					var isMobileDevice = window.isMobile();
+					var customProjectCount = 5;
+					var projectFilename = [];
+					var customProject = [];
+					var widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
+					var hasPlaygroundCrashed = (window.innerWidth > widthCrashThreshold) ? false : true; // Playground won't autoload if "crashed".
+					var isPlaygroundStarting = false;
+					var relaunchOnMobile = false;
+					var isCustomProject = false;
+					var activeCustomProject;
+					var activeProject;
+					var sampleProject;
+					var filename;
+					var loader;
 
-                    function restartPlayground(text) {
-                        // Clean up the error message by removing references to Lua's loadstring().
-                        let firstChange = true;
-                        let start, end;
-                        do {
-                            start = text.indexOf("[string");
-                            if (start != -1) {
-                                end = text.indexOf("]:",start);
-                                if (end != -1) {
-                                    start = firstChange ? start : start-1;
-                                    let pre = text.substring(0,start);
-                                    text = pre + "  line " + text.substring(end+2);
-                                    firstChange = false;
-                                }
-                            }
-                        }
-                        while (start != -1);
-                        // Add an empty line between the initial error message and stack trace.
-                        start = text.indexOf("stack traceback:");
-                        if (start != -1) {
-                            text = text.substring(0,start) + "\n" + text.substring(start);
-                        }
-                        // Solar2D seems to add a reference to a function on line 189 by default.
-                        // If it is there, then just remove it as it doesn't add value to anyone.
-                        let f189 = text.indexOf("?: in function <?:189>");
-                        if (f189 != -1) { text = text.substring(0,f189-1); } // also remove the weird horizontal tabulation symbol.
+					function restartPlayground(text) {
+						// Clean up the error message by removing references to Lua's loadstring().
+						let firstChange = true;
+						let start, end;
+						do {
+							start = text.indexOf("[string");
+							if (start != -1) {
+								end = text.indexOf("]:",start);
+								if (end != -1) {
+									start = firstChange ? start : start-1;
+									let pre = text.substring(0,start);
+									text = pre + "  line " + text.substring(end+2);
+									firstChange = false;
+								}
+							}
+						}
+						while (start != -1);
+						// Add an empty line between the initial error message and stack trace.
+						start = text.indexOf("stack traceback:");
+						if (start != -1) {
+							text = text.substring(0,start) + "\n" + text.substring(start);
+						}
+						// Solar2D seems to add a reference to a function on line 189 by default.
+						// If it is there, then just remove it as it doesn't add value to anyone.
+						let f189 = text.indexOf("?: in function <?:189>");
+						if (f189 != -1) { text = text.substring(0,f189-1); } // also remove the weird horizontal tabulation symbol.
 
-                        let msg = text + "\nThe Playground will now restart."
-                        console.error(msg);
+						let msg = text + "\nThe Playground will now restart."
+						console.error(msg);
 
-                        if (confirm(msg)) {
-                            hasPlaygroundCrashed = false;
-                            if (isMobileDevice) { relaunchOnMobile = true; }
-                        } else {
-                            hasPlaygroundCrashed = true;
-                        }
-                        document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="app/index.html"></iframe><button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>';
-                        if (hasPlaygroundCrashed) {
-                            startButton = document.getElementById("startButton");
-                            startButton.classList.remove("hidden");
-                        } else {
-                            isPlaygroundStarting = true;
-                            loader = setInterval(checkLoaded, 100);
-                        }
-                    }
+						if (confirm(msg)) {
+							hasPlaygroundCrashed = false;
+							if (isMobileDevice) { relaunchOnMobile = true; }
+						} else {
+							hasPlaygroundCrashed = true;
+						}
+						document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="app/index.html"></iframe><button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>';
+						if (hasPlaygroundCrashed) {
+							startButton = document.getElementById("startButton");
+							startButton.classList.remove("hidden");
+						} else {
+							isPlaygroundStarting = true;
+							loader = setInterval(checkLoaded, 100);
+						}
+					}
 
-                    function showDisclaimer(which) {
-                        var disclaimer = document.getElementById("disclaimer");
-                        if (which == "mobile") {
-                            disclaimer.innerHTML = "You seem to be on a mobile device. This website is not designed for mobile devices and it may not run correctly, or at all, on your device. Some of the sample projects also require a keyboard to work.";
-                        } else {
-                            disclaimer.innerHTML = "There was a problem with loading the sample projects. Try again later.";
-                            document.getElementById("sample-buttons").innerHTML = "<p>Failed to load sample projects.</p>";
-                            document.getElementById("sample-buttons").style.fontWeight = "bold";
-                        }
-                        disclaimer.style.padding = "20px";
-                        disclaimer.style.margin = "0px";
-                        disclaimer.style.background = "#d10000";
-                        disclaimer.style.color = "white";
-                        disclaimer.classList.remove("hidden");
-                    }
+					function showDisclaimer(which) {
+						var disclaimer = document.getElementById("disclaimer");
+						if (which == "mobile") {
+							disclaimer.innerHTML = "You seem to be on a mobile device. This website is not designed for mobile devices and it may not run correctly, or at all, on your device. Some of the sample projects also require a keyboard to work.";
+						} else {
+							disclaimer.innerHTML = "There was a problem with loading the sample projects. Try again later.";
+							document.getElementById("sample-buttons").innerHTML = "<p>Failed to load sample projects.</p>";
+							document.getElementById("sample-buttons").style.fontWeight = "bold";
+						}
+						disclaimer.style.padding = "20px";
+						disclaimer.style.margin = "0px";
+						disclaimer.style.background = "#d10000";
+						disclaimer.style.color = "white";
+						disclaimer.classList.remove("hidden");
+					}
 
-                    // Match the code editor's height with the app's height.
-                    function windowResize() {
-                        if (hasPlaygroundCrashed) {
-                            // If Playground has crashed, then calculate an approximate height for the editor.
-                            editor.setSize(null, Math.min(window.innerWidth*0.5*(2/3),960));
-                        } else {
-                            editor.setSize(null,document.getElementById("app-frame").contentWindow._jsContextGetWindowHeight);
-                        }
-                        widthPrompt.innerHTML = '<div class="overlay"><p id="widthPrompt">Solar2D Playground requires a minimum window width of 960 pixels.<br><br>Your current window width is ' + window.innerWidth + 'pixels.</p></div>'
-                    }
-                    // Update the widthPrompt text when window is resized or if a mobile device's orientation changes.
-                    window.addEventListener("resize", windowResize);
+					// Match the code editor's height with the app's height.
+					function windowResize() {
+						if (hasPlaygroundCrashed) {
+							// If Playground has crashed, then calculate an approximate height for the editor.
+							editor.setSize(null, Math.min(window.innerWidth*0.5*(2/3),960));
+						} else {
+							editor.setSize(null,document.getElementById("app-frame").contentWindow._jsContextGetWindowHeight);
+						}
+						widthPrompt.innerHTML = '<div class="overlay"><p id="widthPrompt">Solar2D Playground requires a minimum window width of 960 pixels.<br><br>Your current window width is ' + window.innerWidth + 'pixels.</p></div>'
+					}
+					// Update the widthPrompt text when window is resized or if a mobile device's orientation changes.
+					window.addEventListener("resize", windowResize);
 
-                    // Check if the user is on a mobile device or not, or if the widthCrashThreshold has been triggered.
-                    if (isMobileDevice || hasPlaygroundCrashed) {
-                        startButton.classList.remove("hidden");
-                        if (isMobileDevice) {
-                            window.addEventListener("orientationchange", windowResize );
-                            showDisclaimer("mobile")
-                        }
-                    }
+					// Check if the user is on a mobile device or not, or if the widthCrashThreshold has been triggered.
+					if (isMobileDevice || hasPlaygroundCrashed) {
+						startButton.classList.remove("hidden");
+						if (isMobileDevice) {
+							window.addEventListener("orientationchange", windowResize );
+							showDisclaimer("mobile")
+						}
+					}
 
-                    function addCustomProjects() {
-                        var buttonsCustom = "";
-                        var sampleCount = sampleProject ? sampleProject.length : 0;
-                        for (var i = 0; i < customProjectCount; i++) {
-                            var num = sampleCount+i;
-                            buttonsCustom += '<button id="project-'+num+'" class="button-code" onclick="loadCode(\''+num+'\',\''+"custom"+'\',\''+i+'\')">Project #'+(i+1)+'</button>';
-                            customProject[i] = "-- Project #"+(i+1)+" - Here's an empty project for you to work with.\n-------------------------------------------------------------\n-- You can freely change between projects. All of your changes\n-- are automatically saved until you close the browser window.\n\n";
-                            projectFilename[num] = "Project #"+(i+1);
-                        }
-                        document.getElementById("custom-buttons").innerHTML = buttonsCustom;
-                    }
+					function addCustomProjects() {
+						var buttonsCustom = "";
+						var sampleCount = sampleProject ? sampleProject.length : 0;
+						for (var i = 0; i < customProjectCount; i++) {
+							var num = sampleCount+i;
+							buttonsCustom += '<button id="project-'+num+'" class="button-code" onclick="loadCode(\''+num+'\',\''+"custom"+'\',\''+i+'\')">Project #'+(i+1)+'</button>';
+							customProject[i] = "-- Project #"+(i+1)+" - Here's an empty project for you to work with.\n-------------------------------------------------------------\n-- You can freely change between projects. All of your changes\n-- are automatically saved until you close the browser window.\n\n";
+							projectFilename[num] = "Project #"+(i+1);
+						}
+						document.getElementById("custom-buttons").innerHTML = buttonsCustom;
+					}
 
-                    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-                        mode: "lua",
-                        theme: "dracula",
-                        lineNumbers: true,
-                        scrollbarStyle: "simple"
-                    });
+					var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+						mode: "lua",
+						theme: "dracula",
+						lineNumbers: true,
+						scrollbarStyle: "simple"
+					});
 
-                    // Allow user to rename their custom projects.
-                    function filenameOnInput() {
-                        document.getElementById( 'project-'+activeProject ).innerHTML = filenameField.value;
-                        projectFilename[activeProject] = filenameField.value;
-                    }
+					// Allow user to rename their custom projects.
+					function filenameOnInput() {
+						document.getElementById( 'project-'+activeProject ).innerHTML = filenameField.value;
+						projectFilename[activeProject] = filenameField.value;
+					}
 
-                    // Check what changes the user ultimately made to the project name.
-                    function filenameOnChange() { // If the user added ".lua" extension to the project name, then remove it.
-                        if (filenameField.value.substring(filenameField.value.length-4).toLowerCase() == ".lua") {
-                            filenameField.value = filename.substring(0,filenameField.value.length-4);
-                             // Also, ensure that the field isn't now empty.
-                             if (filenameField.value.length === 0) {
-                                 filenameField.value = "Project #"+(Number(activeCustomProject)+1);
-                             }
-                        } else if (filenameField.value.length === 0) {
-                            filenameField.value = "Project #"+(Number(activeCustomProject)+1);
-                        }
-                        document.getElementById( 'project-'+activeProject ).innerHTML = filenameField.value;
-                        projectFilename[activeProject] = filenameField.value;
-                        filename = filenameField.value;
-                    }
+					// Check what changes the user ultimately made to the project name.
+					function filenameOnChange() { // If the user added ".lua" extension to the project name, then remove it.
+						if (filenameField.value.substring(filenameField.value.length-4).toLowerCase() == ".lua") {
+							filenameField.value = filename.substring(0,filenameField.value.length-4);
+							// Also, ensure that the field isn't now empty.
+							if (filenameField.value.length === 0) {
+								filenameField.value = "Project #"+(Number(activeCustomProject)+1);
+							}
+						} else if (filenameField.value.length === 0) {
+							filenameField.value = "Project #"+(Number(activeCustomProject)+1);
+						}
+						document.getElementById( 'project-'+activeProject ).innerHTML = filenameField.value;
+						projectFilename[activeProject] = filenameField.value;
+						filename = filenameField.value;
+					}
 
-                    // Listen to changes in the editor in order to constantly save changes on all custom projects.
-                    editor.on("change", function() {
-                        if (isCustomProject) {
-                            customProject[activeCustomProject] = editor.getValue();
-                        }
-                    });
+					// Listen to changes in the editor in order to constantly save changes on all custom projects.
+					editor.on("change", function() {
+						if (isCustomProject) {
+							customProject[activeCustomProject] = editor.getValue();
+						}
+					});
 
-                    // Loading the Playground app may take a few seconds, and it isn't fully supported on all mobile browsers,
-                    // so to avoid any hangups or crashes on page load, the user needs to now explicitly start the app. This
-                    // also applies to restarting the Playground manually if the user doesn't choose automatic restart.
-                    function manualStart() {
-                        if (!isPlaygroundStarting) {
-                            isPlaygroundStarting = true;
-                            startButton.classList.add("hidden");
-                            document.getElementById("app-frame").contentWindow.startLoading();
-                            loader = setInterval(checkLoaded, 100);
-                        }
-                    }
+					// Loading the Playground app may take a few seconds, and it isn't fully supported on all mobile browsers,
+					// so to avoid any hangups or crashes on page load, the user needs to now explicitly start the app. This
+					// also applies to restarting the Playground manually if the user doesn't choose automatic restart.
+					function manualStart() {
+						if (!isPlaygroundStarting) {
+							isPlaygroundStarting = true;
+							startButton.classList.add("hidden");
+							document.getElementById("app-frame").contentWindow.startLoading();
+							loader = setInterval(checkLoaded, 100);
+						}
+					}
 
-                    // Give the editor an initial height based on the height of the window and aspect ratio of the app.
-                    editor.setSize(null, Math.min(window.innerWidth*0.5*(2/3),960));
+					// Give the editor an initial height based on the height of the window and aspect ratio of the app.
+					editor.setSize(null, Math.min(window.innerWidth*0.5*(2/3),960));
 
-                    fetch("./demos/demos.json")
-                        .then(function(response) {
-                            if (!response.ok) {
-                                throw new Error(response.statusText);
-                            }
-                            return response.json();
-                        })
-                        .then(function(json) {
-                            sampleProject = json;
+					fetch("./demos/demos.json")
+						.then(function(response) {
+							if (!response.ok) {
+								throw new Error(response.statusText);
+							}
+							return response.json();
+						})
+						.then(function(json) {
+							sampleProject = json;
 
-                            var buttonsSample = "";
-                            for (var i = 0; i < sampleProject.length; i++) {
-                                buttonsSample += '<button id="project-'+i+'" class="button-code" onclick="loadCode(\''+i+'\',\''+"sample"+'\')">'+sampleProject[i].title+'</button>';
-                                projectFilename[i] = sampleProject[i].title;
-                            }
-                            document.getElementById("sample-buttons").innerHTML = buttonsSample;
-                            addCustomProjects();
-                            // Open the code panel and crate project by default.
-                            document.getElementById("code").click();
-                            document.getElementById("project-0").click();
-                        })
-                        .catch(function() {
-                            showDisclaimer("error");
-                            addCustomProjects();
-                        });
-                    // It's unclear as to when the app has finished loading and when Module and its functions are
-                    // available, so keep checking until they are, and then finalise the site's functionality.
-                    function finalise() {
-                        hasPlaygroundCrashed = false;
-                        isPlaygroundStarting = false;
-                        editor.setSize( null, document.getElementById("app-frame").contentWindow._jsContextGetWindowHeight );
-                    }
-                    function checkLoaded() {
-                        try {
-                            if (document.getElementById("app-frame").contentWindow.Module && document.getElementById("app-frame").contentWindow.Module.cwrap) {
-                                clearInterval(loader);
-                                finalise();
-                            }
-                        } catch (err) {
-                            clearInterval(loader); // Stop the loader from running if there's an error.
-                            console.log(err);
-                        }
-                    }
-                    if (!isMobileDevice && !hasPlaygroundCrashed) {
-                        isPlaygroundStarting = true;
-                        loader = setInterval(checkLoaded, 100);
-                    }
+							var buttonsSample = "";
+							for (var i = 0; i < sampleProject.length; i++) {
+								buttonsSample += '<button id="project-'+i+'" class="button-code" onclick="loadCode(\''+i+'\',\''+"sample"+'\')">'+sampleProject[i].title+'</button>';
+								projectFilename[i] = sampleProject[i].title;
+							}
+							document.getElementById("sample-buttons").innerHTML = buttonsSample;
+							addCustomProjects();
+							// Open the code panel and crate project by default.
+							document.getElementById("code").click();
+							document.getElementById("project-0").click();
+						})
+						.catch(function() {
+							showDisclaimer("error");
+							addCustomProjects();
+						});
+					// It's unclear as to when the app has finished loading and when Module and its functions are
+					// available, so keep checking until they are, and then finalise the site's functionality.
+					function finalise() {
+						hasPlaygroundCrashed = false;
+						isPlaygroundStarting = false;
+						editor.setSize( null, document.getElementById("app-frame").contentWindow._jsContextGetWindowHeight );
+					}
+					function checkLoaded() {
+						try {
+							if (document.getElementById("app-frame").contentWindow.Module && document.getElementById("app-frame").contentWindow.Module.cwrap) {
+								clearInterval(loader);
+								finalise();
+							}
+						} catch (err) {
+							clearInterval(loader); // Stop the loader from running if there's an error.
+							console.log(err);
+						}
+					}
+					if (!isMobileDevice && !hasPlaygroundCrashed) {
+						isPlaygroundStarting = true;
+						loader = setInterval(checkLoaded, 100);
+					}
 
-                    // Add listeners for file import/export functions.
-                    document.getElementById("export").addEventListener("click", downloadFile)
-                    document.getElementById('import').addEventListener('change', uploadFile)
-                    window.addEventListener("keyup", function(event) {
-                        const gotKey = (["s", "r"].indexOf(event.key) > -1)
-                        if (event.shiftKey && event.ctrlKey && (gotKey || (event.keyCode !== undefined && [82, 83].indexOf(event.keyCode) > -1))) {
-                            event.preventDefault(); // Just in case some browser has a shift+ctrl+r/s keyboard shortcut.
-                            const key = gotKey ? event.key : (event.keyCode == 82) ? "r" : "s";
-                            // Run the code or restart Playground if it has crashed.
-                            if (key == "r") {
-                                if (hasPlaygroundCrashed) {
-                                    manualStart();
-                                } else if (!isPlaygroundStarting) {
-                                    document.getElementById("app-frame").contentWindow.playgroundApp.dispatchEvent( new CustomEvent( 'inputCode' ) )
-                                }
-                            // Download the current project file.
-                            } else {
-                                downloadFile();
-                            }
-                        }
-                    }, false );
-                </script>
-            </div>
-        </main>
+					// Add listeners for file import/export functions.
+					document.getElementById("export").addEventListener("click", downloadFile)
+					document.getElementById('import').addEventListener('change', uploadFile)
+					window.addEventListener("keyup", function(event) {
+						const gotKey = (["s", "r"].indexOf(event.key) > -1)
+						if (event.shiftKey && event.ctrlKey && (gotKey || (event.keyCode !== undefined && [82, 83].indexOf(event.keyCode) > -1))) {
+							event.preventDefault(); // Just in case some browser has a shift+ctrl+r/s keyboard shortcut.
+							const key = gotKey ? event.key : (event.keyCode == 82) ? "r" : "s";
+							// Run the code or restart Playground if it has crashed.
+							if (key == "r") {
+								if (hasPlaygroundCrashed) {
+									manualStart();
+								} else if (!isPlaygroundStarting) {
+									document.getElementById("app-frame").contentWindow.playgroundApp.dispatchEvent( new CustomEvent( 'inputCode' ) )
+								}
+							// Download the current project file.
+							} else {
+								downloadFile();
+							}
+						}
+					}, false );
+				</script>
+			</div>
+		</main>
 
-        <footer>
-            <p style="line-height: 2">
-                <a href="https://www.erantanen.com/">Solar2D Playground © 2020-2021 Eetu Rantanen</a>
-            </p>
-        </footer>
-    </div>
+		<footer>
+			<p style="line-height: 2">
+				<a href="https://www.erantanen.com/">Solar2D Playground © 2020-2021 Eetu Rantanen</a>
+			</p>
+		</footer>
+	</div>
 </body>
 </html>

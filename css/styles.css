@@ -21,15 +21,29 @@ footer {
     max-width: 1920px;
     flex-shrink: 0;
     width: 100%;
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px 24px;
     background: #080808;
-    text-align: center;
-    padding: 4px 0px;
-    margin: 0px auto;
+    padding: 16px 24px;
+    margin: 0 auto;
 }
 
-footer p {
-    line-height: 2;
+footer a {
+    font-size: 0.85em;
+}
+
+footer .repo-link img {
+    vertical-align: middle;
+    opacity: 0.85;
+    transition: opacity 0.2s, filter 0.2s;
+}
+
+footer .repo-link:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
 }
 
 p {
@@ -250,30 +264,8 @@ button.load:hover {
 
 .panel {
     position: relative;
-    display: none;
     padding: 10px 20px;
     background: #141518;
-}
-
-.close-button {
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    background-color: #282a36;
-    border: 1px solid #080808;
-    border-radius: 4px;
-    color: white;
-    position: absolute;
-    cursor: pointer;
-    right: 10px;
-    top: 10px;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-}
-
-.close-button:hover {
-    background: #080808;
-    color: #FCBA04;
 }
 
 .menu {
@@ -343,45 +335,3 @@ body::-webkit-scrollbar-thumb {
     background: #fcba04;
 }
 
-button.kofi {
-	border-radius: 12px;
-    border: none;
-	display: flex;
-	cursor: pointer;
-	width: 100%;
-	max-width: 360px;
-	max-height: 70px;
-	margin: 16px auto;
-	background: #29abe0;
-}
-
-button.kofi img {
-	width: 100%;
-	max-width: 360px;
-	margin: 0;
-}
-
-button.kofi:hover {
-	animation: rotate 0.7s ease-in-out both;
-}
-
-button.kofi:hover span {
-	animation: shake 0.7s ease-in-out both;
-	animation-delay: 0.06s;
-}
-
-@keyframes rotate {
-	0% { transform: rotate(0deg) translate3d(0, 0, 0); }
-	25% { transform: rotate(4deg) translate3d(0, 0, 0); }
-	50% { transform: rotate(-4deg) translate3d(0, 0, 0); }
-	75% { transform: rotate(2deg) translate3d(0, 0, 0); }
-	100% { transform: rotate(0deg) translate3d(0, 0, 0); }
-}
-
-@keyframes shake {
-	0% { transform: translate3d(0, 0, 0) translateZ(0); }
-	25% { transform: translate3d(5px, 0, 0) translateZ(0); }
-	50% { transform: translate3d(-4px, 0, 0) translateZ(0); }
-	75% { transform: translate3d(3px, 0, 0) translateZ(0); }
-	100% { transform: translate3d(0, 0, 0) translateZ(0); }
-}

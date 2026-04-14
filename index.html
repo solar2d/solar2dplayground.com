@@ -7,6 +7,29 @@
 	<meta name="description" content="Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.">
 	<meta name="author" content="Eetu Rantanen">
 
+	<link rel="canonical" href="">
+
+	<meta property="og:title" content="Solar2D Playground">
+	<meta property="og:description" content="Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="">
+	<meta property="og:image" content="">
+
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Solar2D Playground">
+	<meta name="twitter:description" content="Create and run Solar2D projects instantly online.">
+	<meta name="twitter:image" content="">
+
+	<script>
+		(function() {
+			var base = location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1);
+			document.querySelector('link[rel="canonical"]').href = base;
+			document.querySelector('meta[property="og:url"]').content = base;
+			document.querySelector('meta[property="og:image"]').content = base + "solar2d-playground.png";
+			document.querySelector('meta[name="twitter:image"]').content = base + "solar2d-playground.png";
+		})();
+	</script>
+
 	<link rel="apple-touch-icon" sizes="57x57" href="./apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="./apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="./apple-icon-72x72.png">
@@ -41,8 +64,6 @@
 					<ul class="menu">
 						<li class="logo"><img class="logo-image" src="./img/logo.png" alt="Solar2D Playground"></li>
 						<li id="break"></li>
-						<li class="item"><a id="code" title="Code panel" href="#" onclick="togglePanel('code');return false;">Code</a></li>
-						<li class="item"><a id="info" title="Info panel" href="#" onclick="togglePanel('info');return false;">Info</a></li>
 						<li class="item"><a href="https://docs.coronalabs.com/" target="_blank">Solar2D Docs</a></li>
 						<li class="item last"><a href="https://solar2d.com/" target="_blank">Get Solar2D</a></li>
 					</ul>
@@ -52,8 +73,6 @@
 				<div class="mobile"><p class="hidden" id="disclaimer"></p></div>
 
 				<div id="panel-code" class="panel">
-					<span onclick="closePanel('code')" class="close-button">x</span>
-
 					<div class="segment">
 						<div class="line"></div>
 						<h2>Sample Projects:</h2>
@@ -70,30 +89,6 @@
 						<input type="text" id="projectName" value="solar2dplayground" oninput="filenameOnInput()" onchange="filenameOnChange()" disabled>
 						<div class="line"></div>
 						<p>Keyboard shortcuts: <b>Ctrl+Shift+R</b>: runs your code or restarts the app if it has crashed. <b>Ctrl+Shift+S</b>: downloads the active project file.</p>
-						<div class="line"></div>
-					</div>
-				</div>
-
-				<div id="panel-info" class="panel">
-					<span onclick="closePanel('info')" class="close-button">x</span>
-
-					<div class="segment">
-						<div class="line"></div>
-						<h2>Solar2D Playground:</h2>
-						<p>Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.</p>
-						<p>This website was developed and is maintained by <a href="https://www.erantanen.com">Eetu Rantanen</a>.</p>
-						<p>You can find more of my personal game related projects over at my portfolio site: <a href="https://www.xedur.com">www.xedur.com</a>.
-							I work on all sorts of interesting projects in my free time, especially for Solar2D.
-							If you like what I'm doing, then <a href="https://ko-fi.com/xedur">consider buying me a cup of coffee over at Ko-fi</a>.</p>
-						<button class="kofi"><span><a href="https://ko-fi.com/xedur"><img src="./img/support-me-txt.png"></a></span></button>
-						<div class="line"></div>
-						<h2>Playground limitations & Solar2D:</h2>
-						<p>Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. This website is also hosted on GitHub Pages, which poses issues with CORS, etc.
-							This means that you are limited to only using the assets that are included in Solar2D Playground.</p>
-						<p>If you wish to develop games and apps without limitations, then <a href="https://solar2d.com/" target="_blank">download Solar2D</a>, a fantastic, free, and open source game engine.</p>
-						<p>Solar2D development is sponsored by its users. Support the project on <a href="https://github.com/sponsors/shchvova">GitHub Sponsors</a> or <a href="https://www.patreon.com/shchvova">Patreon</a>.</p>
-						<div class="line"></div>
-						<p>In true open source spirit, the entire <a href="https://github.com/XeduR/solar2dplayground.com">Solar2D Playground source</a> is available under the MIT License.</p>
 						<div class="line"></div>
 					</div>
 				</div>
@@ -118,7 +113,6 @@
 				<script src="./js/detectMobile.js"></script>
 				<script src="./js/fileHandler.js"></script>
 				<script src="./js/handleCode.js"></script>
-				<script src="./js/panel.js"></script>
 
 				<script>
 					var filenameField = document.getElementById( "projectName" );
@@ -299,8 +293,6 @@
 							}
 							document.getElementById("sample-buttons").innerHTML = buttonsSample;
 							addCustomProjects();
-							// Open the code panel and crate project by default.
-							document.getElementById("code").click();
 							document.getElementById("project-0").click();
 						})
 						.catch(function() {
@@ -356,9 +348,8 @@
 		</main>
 
 		<footer>
-			<p>
-				<a href="https://www.erantanen.com/">Solar2D Playground © 2020-2021 Eetu Rantanen</a>
-			</p>
+			<a href="https://www.erantanen.com/" target="_blank">&copy; 2020-2026 Eetu Rantanen</a>
+			<a class="repo-link" href="https://github.com/XeduR/solar2dplayground.com" target="_blank">Source available at: <img src="./img/GitHub_Lockup_White.svg" alt="GitHub" height="16"></a>
 		</footer>
 	</div>
 </body>

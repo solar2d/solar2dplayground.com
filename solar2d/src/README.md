@@ -1,36 +1,55 @@
-# [solar2dplayground.com](https://www.solar2dplayground.com/)
+# Solar2D Playground App
 
-Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.
+The Solar2D app that powers [Solar2D Playground](https://playground.solar2d.com/). It runs as an HTML5 build inside an iframe on the website, receives user code from the browser's code editor, and executes it via `loadstring()`.
 
-This website ws developed and is maintained by [Eetu Rantanen](https://www.erantanen.com).
+## How It Works
 
-You can find more of my personal game related projects over at my portfolio site: [www.xedur.com](https://www.xedur.com). I work on all sorts of interesting projects in my free time, especially for Solar2D. If you like what I'm doing, then [consider buying me a cup of coffee over at Ko-fi](https://ko-fi.com/xedur).
+The website's code editor sends Lua code to the app through a custom event dispatched on the iframe. The app calls `loadstring()` to compile and run the code. Before each run, the app performs a full reset: stops physics, cancels all timers and transitions, removes all Runtime listeners, undefines custom shaders, clears all user-created display objects, and restores modified globals to their original values.
 
-<a href="https://ko-fi.com/xedur" rel="Support me">![Foo](https://www.solar2dplayground.com/img/support-me-btn.png)</a>
+The code is executed with a raw `loadstring()()` call rather than being wrapped in `pcall` or `xpcall`. This is intentional: while `pcall` would prevent crashes from errors in the initial code, it produces a less useful stack trace. By letting the app crash on error, Solar2D's built-in error handler sends a full, descriptive stack trace to the browser, which is far more helpful for the user. It also makes crash behaviour consistent and predictable regardless of where the error occurs.
 
-## Playground limitations & Solar2D:
-Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. A few features, such as physics, also behave slightly differently on HTML5 builds (for now at least) compared to other platforms. This website is also hosted on GitHub Pages, which poses issues with CORS, etc. This means that you are limited to only using the assets that are included in Solar2D Playground.
+### Sandboxing
 
-If you wish to develop games and apps without limitations, then [download Solar2D](https://solar2d.com/), a fantastic, free, and open source game engine.
+- **Global tracking**: All original `_G` entries are recorded at startup. After each reset, any new globals are removed and any modified originals are restored.
+- **Runtime listeners**: `Runtime.addEventListener` is wrapped to track all user-added listeners, ensuring they get cleaned up on reset.
+- **Physics state**: `physics.start/pause/stop` are wrapped to track state for automatic cleanup.
+- **Custom shaders**: `graphics.defineEffect` is wrapped to track and undefine user-created effects.
+- **Disabled APIs**: `disabledAPI.lua` stubs out functions that don't work in the HTML5/GitHub Pages environment (native UI, file I/O, networking, etc.) with warning messages pointing users to the full Solar2D download.
 
-Solar2D development is sponsored by its users. Support the project on [GitHub Sponsors](https://github.com/sponsors/shchvova) or [Patreon](https://www.patreon.com/shchvova).
+### Display object management
 
----
+`newDisplay.lua` wraps all `display.new*` functions so that user-created display objects are automatically inserted into a managed group (`groupGlobal`). This lets the app remove everything the user created without touching its own UI elements.
 
-In true open source spirit, the entire [Solar2D Playground source](https://github.com/XeduR/solar2dplayground.com) is available under the MIT License.
+### Built-in assets
 
-----
+The app bundles a set of images (`img/`), sounds (`sfx/`), and fonts (`fnt/`) that users can reference in their code. The in-app asset browser (toggled via sidebar buttons) lets users browse available assets and copy file paths to their clipboard.
 
-## Notes on developing for Solar2D Playground
+## Building
 
-1. The source files for Solar2D Playground are not available on the Solar2D subdomain's repository. The source files can be found at [the main repository](https://github.com/XeduR/solar2dplayground.com/).
-2. If you have your own sample projects that you'd like to have added to the Playground, you can reach out to me via [Solar2D's official Discord channel](https://discord.gg/QTD4g4w) or send me an email (check email from my GitHub profile). If you want to create sample projects for your own fork, then you can utilise the [FileToJSON](https://github.com/XeduR/solar2dplayground.com/tree/gh-pages/app-source/source/fileToJSON) project located within the repository to format your project into a compact string, which you can then add to the `demos.json` file that gets automatically loaded with the Playground.
-3. When building the playground using Solar2D Simulator, set `Application Name` to "playground". Version Code doesn't matter. Then make sure that you check `Include Standard Resources ✔️` because they are needed for Widgets to work. Then make sure that `Create FB Instant archive ❌` is deselected.
-4. Certain Solar2D Playground features, like copying asset filepath and name to clipboard, requires the app to remain active. Currently Solar2D's HTML5 builds, however, freeze by default if user clicks outside of the app. This default behaviour can be bypassed by
-    1. First building the playground app and then unzipping the `playground.bin` file.
-    2. Open `coronaHtml5App.js` and search for function `_emscripten_set_blur_callback(target,userData,useCapture,callbackfunc){JSEvents.registerFocusEventCallback(target,userData,useCapture,callbackfunc,12,"blur");return 0}`.
-    3. Remove the following code from the function: `JSEvents.registerFocusEventCallback(target,userData,useCapture,callbackfunc,12,"blur");`.
-    4. After you've removed it, the remaining function should look like: `function _emscripten_set_blur_callback(target,userData,useCapture,callbackfunc){return 0}`.
-    5. Then add the two files back to .bin archive and you are done!
-5. If you need to test new features or fixes, you should push those changes to beta first and test them at [https://www.solar2dplayground.com/beta/](https://www.solar2dplayground.com/beta/) in order to avoid crashing the live site. The beta version does not exist on the Solar2D subdomain.
-6. If you have any questions and suggestions concerning Solar2D Playground, feel free to get in touch!
+Open `solar2d/src/` as a project in Solar2D Simulator and build for HTML5 with these settings:
+
+- **Application Name**: `playground`
+- **Include Standard Resources**: yes
+- **Create FB Instant archive**: no
+
+After building, patch the `.bin` archive to remove the blur callback registration (prevents the app from freezing when clicking outside):
+
+```bash
+python remove_blur_callback.py bin/
+```
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `main.lua` | Entry point. Sets up UI, sandboxing, and the code execution pipeline. |
+| `config.lua` | Display config: 960x640 letterbox at 60 fps. |
+| `disabledAPI.lua` | Stubs out APIs unavailable in the Playground environment. |
+| `newDisplay.lua` | Wraps `display.new*` to auto-insert objects into the managed group. |
+| `createWindow.lua` | Asset browser windows (images, sounds, fonts). |
+| `printToDisplay.lua` | In-app console overlay with syntax highlighting. |
+| `spyricFontLoader.lua` | Preloads bundled fonts for use in user code. |
+| `inputCode.js` | JS bridge: receives code from the parent page via custom events. |
+| `versionInfo.js` | Outputs Playground and Solar2D version info to the browser console. |
+| `copyToClipboard.js` | JS bridge: copies asset paths to the user's clipboard. |
+| `printToBrowser.js` | JS bridge: forwards Lua print output to the browser console. |

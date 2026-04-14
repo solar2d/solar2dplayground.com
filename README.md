@@ -1,36 +1,84 @@
-# [solar2dplayground.com](https://www.solar2dplayground.com/)
+# Solar2D Playground
 
-Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.
+A browser-based code editor and runtime for [Solar2D](https://solar2d.com/). Write Lua code, hit run, and see it execute instantly in an embedded Solar2D HTML5 build. No installation required.
 
-This website ws developed and is maintained by [Eetu Rantanen](https://www.erantanen.com).
+**[Try it online](https://playground.solar2d.com/)**
 
-You can find more of my personal game related projects over at my portfolio site: [www.xedur.com](https://www.xedur.com). I work on all sorts of interesting projects in my free time, especially for Solar2D. If you like what I'm doing, then [consider buying me a cup of coffee over at Ko-fi](https://ko-fi.com/xedur).
+![Solar2D Playground](solar2d-playground.png)
 
-<a href="https://ko-fi.com/xedur" rel="Support me">![Foo](https://www.solar2dplayground.com/img/support-me-btn.png)</a>
+## What Is This?
 
-## Playground limitations & Solar2D:
-Solar2D's HTML5 builds are still in beta. This means that some mobile browsers aren't supported and certain features aren't useable on Solar2D Playground. A few features, such as physics, also behave slightly differently on HTML5 builds (for now at least) compared to other platforms. This website is also hosted on GitHub Pages, which poses issues with CORS, etc. This means that you are limited to only using the assets that are included in Solar2D Playground.
+Solar2D Playground lets you experiment with Solar2D directly in the browser. It includes a set of sample projects that demonstrate various Solar2D features, and five custom project slots where you can write, edit, and test your own code. Projects can be uploaded and downloaded as `.lua` files.
 
-If you wish to develop games and apps without limitations, then [download Solar2D](https://solar2d.com/), a fantastic, free, and open source game engine.
+The embedded Solar2D app has access to a collection of built-in images, sounds, and fonts. Because the Playground runs on a static hosting environment (GitHub Pages), you are limited to these bundled assets.
 
-Solar2D development is sponsored by its users. Support the project on [GitHub Sponsors](https://github.com/sponsors/shchvova) or [Patreon](https://www.patreon.com/shchvova).
+If you want to build games and apps without limitations, [download Solar2D](https://solar2d.com/).
 
----
+## Features
 
-In true open source spirit, the entire [Solar2D Playground source](https://github.com/XeduR/solar2dplayground.com) is available under the MIT License.
+- **Code editor** with Lua syntax highlighting (CodeMirror with Dracula theme)
+- **Sample projects** loaded from the server, showcasing different Solar2D features
+- **Custom project slots** for writing and testing your own code
+- **Upload and download** projects as `.lua` files
+- **Keyboard shortcuts**: Ctrl+Shift+R to run/restart, Ctrl+Shift+S to download
 
-----
+## Planned features
 
-## Notes on developing for Solar2D Playground
+- External asset uploads (not limited to bundled assets)
+- Shareable project URLs via dynamic slugs and Cloudflare integration
+- Google Drive integration for saving and loading projects
+- Improved debugging tools for catching coding errors
+- Full screen mode
 
-1. The source files for Solar2D Playground are not available on the Solar2D subdomain's repository. The source files can be found at [the main repository](https://github.com/XeduR/solar2dplayground.com/).
-2. If you have your own sample projects that you'd like to have added to the Playground, you can reach out to me via [Solar2D's official Discord channel](https://discord.gg/QTD4g4w) or send me an email (check email from my GitHub profile). If you want to create sample projects for your own fork, then you can utilise the [FileToJSON](https://github.com/XeduR/solar2dplayground.com/tree/gh-pages/app-source/source/fileToJSON) project located within the repository to format your project into a compact string, which you can then add to the `demos.json` file that gets automatically loaded with the Playground.
-3. When building the playground using Solar2D Simulator, set `Application Name` to "playground". Version Code doesn't matter. Then make sure that you check `Include Standard Resources ✔️` because they are needed for Widgets to work. Then make sure that `Create FB Instant archive ❌` is deselected.
-4. Certain Solar2D Playground features, like copying asset filepath and name to clipboard, requires the app to remain active. Currently Solar2D's HTML5 builds, however, freeze by default if user clicks outside of the app. This default behaviour can be bypassed by
-    1. First building the playground app and then unzipping the `playground.bin` file.
-    2. Open `coronaHtml5App.js` and search for function `_emscripten_set_blur_callback(target,userData,useCapture,callbackfunc){JSEvents.registerFocusEventCallback(target,userData,useCapture,callbackfunc,12,"blur");return 0}`.
-    3. Remove the following code from the function: `JSEvents.registerFocusEventCallback(target,userData,useCapture,callbackfunc,12,"blur");`.
-    4. After you've removed it, the remaining function should look like: `function _emscripten_set_blur_callback(target,userData,useCapture,callbackfunc){return 0}`.
-    5. Then add the two files back to .bin archive and you are done!
-5. If you need to test new features or fixes, you should push those changes to beta first and test them at [https://www.solar2dplayground.com/beta/](https://www.solar2dplayground.com/beta/) in order to avoid crashing the live site. The beta version does not exist on the Solar2D subdomain.
-6. If you have any questions and suggestions concerning Solar2D Playground, feel free to get in touch!
+## How to Contribute
+
+Contributions are welcome. If you have sample projects you'd like to add, fixes to suggest, or improvements to make, feel free to open a pull request or reach out via [Solar2D's Discord](https://discord.gg/QTD4g4w).
+
+### Running locally
+
+Serve the project folder with any static HTTP server (e.g. XAMPP, Apache, Nginx). Then open `http://localhost/www.solar2dplayground.com/` in your browser.
+
+If the Solar2D app fails to load (black screen, font loading errors in the console), make sure you are using `http://` and not `https://`. Firefox's OpenType Sanitizer rejects fonts loaded from blob URLs when the page is served over HTTPS with a self-signed certificate, which prevents the app from starting.
+
+### Adding or updating sample projects
+
+Sample projects live in `demos/` as individual `.lua` files. The order they appear in the Playground is controlled by `demos/demo-order.json`. After adding or modifying demos, rebuild `demos/demos.json`:
+
+```bash
+python demos/build_demos.py
+```
+
+### Building the Solar2D app
+
+The Solar2D source lives in `solar2d/src/`. Build it as an HTML5 project using Solar2D Simulator with the following settings:
+
+- **Application Name**: `playground` (the built-in `index.html` expects `playground.bin` and `playground.data`)
+- **Version Code**: any value
+- **Include Standard Resources**: off
+- **Create FB Instant Archive**: off
+
+After building, copy only the `.bin` and `.data` files into `solar2d/bin/`. Do not copy any HTML files produced by the build. The project uses a customised `index.html` that the default Solar2D HTML5 output does not include. Overwriting it will break the Playground. Key differences from the default:
+
+- Blocking `alert()` dialogs replaced with automatic restart via `parent.restartPlayground()`
+- Deferred loading (`startLoading()`) with mobile detection to skip autostart on mobile devices
+- Pointer capture with edge projection for tracking drags outside the canvas and across the iframe boundary
+- Arrow key scroll prevention
+- Keyboard shortcuts (Ctrl+Shift+R to run, Ctrl+Shift+S to download)
+- Restyled loading screen
+- Parent page integration (`playgroundApp`, `manualStart()`, `downloadFile()`)
+
+Then patch the `.bin` archive to remove the blur callback registration (prevents the app from freezing when clicking outside):
+
+```bash
+python solar2d/remove_blur_callback.py solar2d/bin/
+```
+
+**Note**: A standalone mode that lets the Solar2D app run projects directly (without the iframe/website) is planned, which will allow contributors to test sample projects using just Solar2D's Live Server.
+
+## Author
+
+[Eetu Rantanen](https://www.erantanen.com)
+
+## License
+
+[MIT](LICENSE)

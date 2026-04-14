@@ -13,7 +13,7 @@ local frameJump = { type = "image", filename = "img/jump.png" }
 -- Declaring multiple similar variables on the same line to reduce repetition.
 local movementDirection, state1, inAir = "right", true, false
 -- The knight's start/previous x location, as well as movement speed, jump height and jump duration.
-local prevX, moveSpeed, jumpHeight, jumpDuration = 480, 8, 80, 200
+local prevX, moveSpeed, jumpHeight, jumpDuration = 480, 4, 80, 200
 local knightGroup = display.newGroup() -- By adding the knight and his shadow to a group, we can handle both at the same time.
 
 local shadow = display.newCircle( knightGroup, prevX, 396, 46 )
@@ -25,7 +25,7 @@ local knight = display.newRect( knightGroup, prevX, 320, 156, 156 )
 knight.fill = frameIdle
 
 local action = {}
-local framesBetweenChange, currentFrame = 4, 1
+local framesBetweenChange, currentFrame = 12, 1
 local function moveCharacter()
 	local keyDown = false
 	-- See if one of the selected action buttons is down and move the knight.
@@ -61,7 +61,7 @@ local function moveCharacter()
 		if not inAir then
 			if state1 then -- Change the shadow scale and knight.y to make the knight "wobble".
 				knight.fill = frameMove2
-				knight.y = shadow.y-76
+				knight.y = shadow.y - 76
 				shadow.xScale, shadow.yScale = 1, 0.5
 			else
 				knight.fill = frameMove1

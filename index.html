@@ -121,8 +121,7 @@
 					const customProjectCount = 5;
 					const projectFilename = [];
 					const customProject = [];
-					const widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
-					let hasPlaygroundCrashed = window.innerWidth <= widthCrashThreshold; // Playground won't autoload if "crashed".
+					let hasPlaygroundCrashed = false;
 					let isPlaygroundStarting = false;
 					let relaunchOnMobile = false;
 					let isCustomProject = false;
@@ -204,12 +203,9 @@
 					// Update the widthPrompt text when window is resized.
 					window.addEventListener("resize", windowResize);
 
-					// Check if the user is on a mobile device or not, or if the widthCrashThreshold has been triggered.
-					if (isMobileDevice || hasPlaygroundCrashed) {
+					if (isMobileDevice) {
 						startButton.classList.remove("hidden");
-						if (isMobileDevice) {
-							showDisclaimer("mobile")
-						}
+						showDisclaimer("mobile")
 					}
 
 					function addCustomProjects() {
@@ -316,7 +312,7 @@
 							console.log(err);
 						}
 					}
-					if (!isMobileDevice && !hasPlaygroundCrashed) {
+					if (!isMobileDevice) {
 						isPlaygroundStarting = true;
 						loader = setInterval(checkLoaded, 100);
 					}

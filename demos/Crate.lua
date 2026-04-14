@@ -6,7 +6,7 @@ display.setDefault( "background", 0, 0.3, 0.8 )
 -- Require and start the physics engine.
 local physics = require("physics")
 physics.start()
-physics.setGravity( 0, 98.1 ) -- Setting a very high gravity.
+physics.setGravity( 0, 9.81 )
 
 -- Create a sword altar, the ground and a crate, and give them all physics bodies.
 local swordShape = { -2, -62, 9, -62, 49, 10, 49, 95, -40, 95, -40, 10 }
@@ -41,7 +41,7 @@ local function dragObject( event )
 
 		else
 			stage:setFocus( nil )
-			body.isFocus = false	
+			body.isFocus = false
 			body.tempJoint:removeSelf()
 
 		end

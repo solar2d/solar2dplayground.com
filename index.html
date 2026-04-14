@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="keywords" content="Solar2D, HTML5, Lua, gamedev, game development, open source, sandbox, playground, XeduR, Eetu Rantanen">
 	<meta name="description" content="Solar2D Playground is an interactive website that allows you to create and run Solar2D projects instantly online.">
 	<meta name="author" content="Eetu Rantanen">
 
@@ -22,7 +21,7 @@
 
 	<script>
 		(function() {
-			var base = location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1);
+			const base = location.origin + location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1);
 			document.querySelector('link[rel="canonical"]').href = base;
 			document.querySelector('meta[property="og:url"]').content = base;
 			document.querySelector('meta[property="og:image"]').content = base + "solar2d-playground.png";
@@ -86,7 +85,7 @@
 						<input type="file" id="import" class="hidden" accept=".lua" disabled>
 						<label for="import" id="button-import" class="button-code disabled" >Upload project</label>
 						<input type="button" id="export" class="button-code" value="Download active project"/>
-						<input type="text" id="projectName" value="solar2dplayground" oninput="filenameOnInput()" onchange="filenameOnChange()" disabled>
+						<input type="text" id="projectName" value="solar2dplayground" disabled>
 						<div class="line"></div>
 						<p>Keyboard shortcuts: <b>Ctrl+Shift+R</b>: runs your code or restarts the app if it has crashed. <b>Ctrl+Shift+S</b>: downloads the active project file.</p>
 						<div class="line"></div>
@@ -100,7 +99,7 @@
 				<div class="column-right">
 					<div id="app" class="iframe-container">
 						<iframe id="app-frame" scrolling="no" src="solar2d/bin/index.html"></iframe>
-						<button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>
+						<button id="startButton" class="load hidden">Start Solar2D Playground</button>
 					</div>
 				</div>
 
@@ -115,23 +114,23 @@
 				<script src="./js/handleCode.js"></script>
 
 				<script>
-					var filenameField = document.getElementById( "projectName" );
-					var startButton = document.getElementById("startButton");
-					var widthPrompt = document.getElementById("widthPrompt");
-					var isMobileDevice = window.isMobile();
-					var customProjectCount = 5;
-					var projectFilename = [];
-					var customProject = [];
-					var widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
-					var hasPlaygroundCrashed = (window.innerWidth > widthCrashThreshold) ? false : true; // Playground won't autoload if "crashed".
-					var isPlaygroundStarting = false;
-					var relaunchOnMobile = false;
-					var isCustomProject = false;
-					var activeCustomProject;
-					var activeProject;
-					var sampleProject;
-					var filename;
-					var loader;
+					const filenameField = document.getElementById("projectName");
+					let startButton = document.getElementById("startButton");
+					const widthPrompt = document.getElementById("widthPrompt");
+					const isMobileDevice = window.isMobile();
+					const customProjectCount = 5;
+					const projectFilename = [];
+					const customProject = [];
+					const widthCrashThreshold = 640; // For some reason, the Playground crashes if it launches with a window width of 640 or less.
+					let hasPlaygroundCrashed = window.innerWidth <= widthCrashThreshold; // Playground won't autoload if "crashed".
+					let isPlaygroundStarting = false;
+					let relaunchOnMobile = false;
+					let isCustomProject = false;
+					let activeCustomProject;
+					let activeProject;
+					let sampleProject;
+					let filename;
+					let loader;
 
 					function restartPlayground(text) {
 						// Clean up the error message by removing references to Lua's loadstring().
@@ -139,9 +138,9 @@
 						let start, end;
 						do {
 							start = text.indexOf("[string");
-							if (start != -1) {
+							if (start !== -1) {
 								end = text.indexOf("]:",start);
-								if (end != -1) {
+								if (end !== -1) {
 									start = firstChange ? start : start-1;
 									let pre = text.substring(0,start);
 									text = pre + "  line " + text.substring(end+2);
@@ -149,16 +148,16 @@
 								}
 							}
 						}
-						while (start != -1);
+						while (start !== -1);
 						// Add an empty line between the initial error message and stack trace.
 						start = text.indexOf("stack traceback:");
-						if (start != -1) {
+						if (start !== -1) {
 							text = text.substring(0,start) + "\n" + text.substring(start);
 						}
 						// Solar2D seems to add a reference to a function on line 189 by default.
 						// If it is there, then just remove it as it doesn't add value to anyone.
 						let f189 = text.indexOf("?: in function <?:189>");
-						if (f189 != -1) { text = text.substring(0,f189-1); } // also remove the weird horizontal tabulation symbol.
+						if (f189 !== -1) { text = text.substring(0,f189-1); } // also remove the weird horizontal tabulation symbol.
 
 						let msg = text + "\nThe Playground will now restart."
 						console.error(msg);
@@ -169,9 +168,10 @@
 						} else {
 							hasPlaygroundCrashed = true;
 						}
-						document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="solar2d/bin/index.html"></iframe><button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>';
+						document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="solar2d/bin/index.html"></iframe><button id="startButton" class="load hidden">Start Solar2D Playground</button>';
+						startButton = document.getElementById("startButton");
+						startButton.addEventListener("click", manualStart);
 						if (hasPlaygroundCrashed) {
-							startButton = document.getElementById("startButton");
 							startButton.classList.remove("hidden");
 						} else {
 							isPlaygroundStarting = true;
@@ -180,8 +180,8 @@
 					}
 
 					function showDisclaimer(which) {
-						var disclaimer = document.getElementById("disclaimer");
-						if (which == "mobile") {
+						const disclaimer = document.getElementById("disclaimer");
+						if (which === "mobile") {
 							disclaimer.innerHTML = "You seem to be on a mobile device. This website is not designed for mobile devices and it may not run correctly, or at all, on your device. Some of the sample projects also require a keyboard to work.";
 						} else {
 							disclaimer.innerHTML = "There was a problem with loading the sample projects. Try again later.";
@@ -201,31 +201,30 @@
 						}
 						widthPrompt.innerHTML = '<div class="overlay"><p id="widthPrompt">Solar2D Playground requires a minimum window width of 960 pixels.<br><br>Your current window width is ' + window.innerWidth + 'pixels.</p></div>'
 					}
-					// Update the widthPrompt text when window is resized or if a mobile device's orientation changes.
+					// Update the widthPrompt text when window is resized.
 					window.addEventListener("resize", windowResize);
 
 					// Check if the user is on a mobile device or not, or if the widthCrashThreshold has been triggered.
 					if (isMobileDevice || hasPlaygroundCrashed) {
 						startButton.classList.remove("hidden");
 						if (isMobileDevice) {
-							window.addEventListener("orientationchange", windowResize );
 							showDisclaimer("mobile")
 						}
 					}
 
 					function addCustomProjects() {
-						var buttonsCustom = "";
-						var sampleCount = sampleProject ? sampleProject.length : 0;
-						for (var i = 0; i < customProjectCount; i++) {
-							var num = sampleCount+i;
-							buttonsCustom += '<button id="project-'+num+'" class="button-code" onclick="loadCode(\''+num+'\',\''+"custom"+'\',\''+i+'\')">Project #'+(i+1)+'</button>';
+						let buttonsCustom = "";
+						const sampleCount = sampleProject ? sampleProject.length : 0;
+						for (let i = 0; i < customProjectCount; i++) {
+							const num = sampleCount+i;
+							buttonsCustom += '<button id="project-'+num+'" class="button-code" data-target="'+num+'" data-type="custom" data-custom-num="'+i+'">Project #'+(i+1)+'</button>';
 							customProject[i] = "-- Project #"+(i+1)+" - Here's an empty project for you to work with.\n-------------------------------------------------------------\n-- You can freely change between projects. All of your changes\n-- are automatically saved until you close the browser window.\n\n";
 							projectFilename[num] = "Project #"+(i+1);
 						}
 						document.getElementById("custom-buttons").innerHTML = buttonsCustom;
 					}
 
-					var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+					const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 						mode: "lua",
 						theme: "dracula",
 						lineNumbers: true,
@@ -240,7 +239,7 @@
 
 					// Check what changes the user ultimately made to the project name.
 					function filenameOnChange() { // If the user added ".lua" extension to the project name, then remove it.
-						if (filenameField.value.substring(filenameField.value.length-4).toLowerCase() == ".lua") {
+						if (filenameField.value.substring(filenameField.value.length-4).toLowerCase() === ".lua") {
 							filenameField.value = filename.substring(0,filenameField.value.length-4);
 							// Also, ensure that the field isn't now empty.
 							if (filenameField.value.length === 0) {
@@ -286,9 +285,9 @@
 						.then(function(json) {
 							sampleProject = json;
 
-							var buttonsSample = "";
-							for (var i = 0; i < sampleProject.length; i++) {
-								buttonsSample += '<button id="project-'+i+'" class="button-code" onclick="loadCode(\''+i+'\',\''+"sample"+'\')">'+sampleProject[i].title+'</button>';
+							let buttonsSample = "";
+							for (let i = 0; i < sampleProject.length; i++) {
+								buttonsSample += '<button id="project-'+i+'" class="button-code" data-target="'+i+'" data-type="sample">'+sampleProject[i].title+'</button>';
 								projectFilename[i] = sampleProject[i].title;
 							}
 							document.getElementById("sample-buttons").innerHTML = buttonsSample;
@@ -322,16 +321,32 @@
 						loader = setInterval(checkLoaded, 100);
 					}
 
-					// Add listeners for file import/export functions.
-					document.getElementById("export").addEventListener("click", downloadFile)
-					document.getElementById('import').addEventListener('change', uploadFile)
+					// Event delegation for dynamically generated project buttons.
+					document.getElementById("sample-buttons").addEventListener("click", function(event) {
+						const button = event.target.closest("[data-target]");
+						if (button) {
+							loadCode(button.dataset.target, button.dataset.type);
+						}
+					});
+					document.getElementById("custom-buttons").addEventListener("click", function(event) {
+						const button = event.target.closest("[data-target]");
+						if (button) {
+							loadCode(button.dataset.target, button.dataset.type, button.dataset.customNum);
+						}
+					});
+
+					startButton.addEventListener("click", manualStart);
+					filenameField.addEventListener("input", filenameOnInput);
+					filenameField.addEventListener("change", filenameOnChange);
+					document.getElementById("export").addEventListener("click", downloadFile);
+					document.getElementById("import").addEventListener("change", uploadFile);
 					window.addEventListener("keyup", function(event) {
 						const gotKey = (["s", "r"].indexOf(event.key) > -1)
 						if (event.shiftKey && event.ctrlKey && (gotKey || (event.keyCode !== undefined && [82, 83].indexOf(event.keyCode) > -1))) {
 							event.preventDefault(); // Just in case some browser has a shift+ctrl+r/s keyboard shortcut.
-							const key = gotKey ? event.key : (event.keyCode == 82) ? "r" : "s";
+							const key = gotKey ? event.key : (event.keyCode === 82) ? "r" : "s";
 							// Run the code or restart Playground if it has crashed.
-							if (key == "r") {
+							if (key === "r") {
 								if (hasPlaygroundCrashed) {
 									manualStart();
 								} else if (!isPlaygroundStarting) {

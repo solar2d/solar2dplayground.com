@@ -1,15 +1,15 @@
 // The app calls this function to get the code from the editor.
 function getCode() {
-    var code = editor.getValue();
+    const code = editor.getValue();
     return code;
 }
 
-var hasFinalised = false;
+let hasFinalised = false;
 
 // Clearing the editor and loading a new custom or sample projects.
 function loadCode(target,type,customNum) {
-    var buttonImport = document.getElementById("import");
-    var isImportDisabled = buttonImport.disabled;
+    const buttonImport = document.getElementById("import");
+    const isImportDisabled = buttonImport.disabled;
     filenameField.value = projectFilename[target];
     filename = projectFilename[target];
     activeProject = target;
@@ -29,7 +29,7 @@ function loadCode(target,type,customNum) {
     } else {
         buttonImport.disabled = true;
         filenameField.disabled = true;
-        if (!isImportDisabled) {;
+        if (!isImportDisabled) {
             document.getElementById("button-import").classList.add("disabled");
         }
         if (typeof sampleProject === 'object' && typeof sampleProject[target] === 'object') {

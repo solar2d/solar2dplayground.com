@@ -54,7 +54,7 @@ p {
 
 h2 {
     font-family: 'Roboto', sans-serif;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #FCBA04;
     text-decoration: underline;
     font-weight: normal;
@@ -64,7 +64,7 @@ h2 {
 h4 {
 	color: #ffffff;
 	background: #be0019;
-	font-size: 22px;
+	font-size: 1.375rem;
 	padding: 20px 20px;
 	margin: 0;
 	text-align: center;
@@ -80,11 +80,6 @@ h4 {
     display: flex;
     flex-direction: column;
     height: 100vh;
-}
-
-.hidden {
-    margin: 0;
-    padding: 0;
 }
 
 .mobile {
@@ -151,7 +146,7 @@ ul {
 }
 
 .menu li {
-    font-size: 16px;
+    font-size: 1rem;
     padding: 0 16px;
     white-space: nowrap;
 }
@@ -193,7 +188,7 @@ ul {
 
 .button-header {
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     border: none;
     outline: 0;
     color: inherit;
@@ -215,7 +210,7 @@ ul {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 0.875rem;
     margin: 4px 8px;
     margin-left: 0px;
     cursor: pointer;
@@ -227,7 +222,7 @@ button.load {
 	border-radius: 12px;
 	color: #fcba04;
 	font-family: 'Roboto', sans-serif;
-	font-size: 18px;
+	font-size: 1.125rem;
 	position: absolute;
 	padding: 16px;
 	top: 80%;

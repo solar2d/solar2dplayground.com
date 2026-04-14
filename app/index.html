@@ -34,8 +34,6 @@
 			color: #ffb301;
 		}
 		progress[value] {
-			-webkit-appearance: none;
-			-moz-appearance: none;
 			appearance: none;
 			border: none;
 			background-color: #eee;
@@ -43,34 +41,19 @@
 			box-shadow: 0 4px 4px rgba(0,0,0,.5) inset;
 			width: 100%;
 			max-width: 200px;
-			height: 8px
+			height: 8px;
 		}
 		progress[value]::-webkit-progress-bar {
 			background-color: #eee;
 			box-shadow: 0 4px 4px rgba(0,0,0,.5) inset;
-			width: 100%;
-			max-width: 200px;
-			height: 8px
 		}
 		progress[value]::-webkit-progress-value {
 			background-color: #ffb301;
 			box-shadow: 0 4px 4px rgba(0,0,0,.5) inset;
-			width: 100%;
-			max-width: 200px;
-			height: 8px
 		}
 		progress[value]::-moz-progress-bar {
 			background-color: #ffb301;
 			box-shadow: 0 4px 4px rgba(0,0,0,.5) inset;
-			width: 100%;
-			max-width: 200px;
-			height: 8px
-		}
-		progress[value]::-moz-progress-value {
-			box-shadow: 0 4px 4px rgba(0,0,0,.5) inset;
-			width: 100%;
-			max-width: 200px;
-			height: 8px
 		}
 		.container {
 			position: relative;
@@ -87,7 +70,6 @@
 			margin: 0;
 			top: 50%;
 			left: 50%;
-			-ms-transform: translate(-50%, -50%);
 			transform: translate(-50%, -50%);
 		}
 		.bar {
@@ -97,7 +79,6 @@
 			margin: 0;
 			bottom: 10px;
 			left: 50%;
-			-ms-transform: translate(-50%, -300%);
 			transform: translate(-50%, -300%);
 		}
 		.text {
@@ -108,7 +89,6 @@
 			margin: 0;
 			bottom: 4px;
 			left: 50%;
-			-ms-transform: translateX(-50%);
 			transform: translateX(-50%);
 		}
 		/* Support for mobile devices */
@@ -152,8 +132,8 @@
 	</div>
 
 	<script type='text/javascript'>
-		var statusElement = document.getElementById('status');
-		var progressElement = document.getElementById('progress');
+		const statusElement = document.getElementById('status');
+		const progressElement = document.getElementById('progress');
 
 		var Module = {
 			Zlib:
@@ -205,7 +185,7 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 			}
 		},
 		canvas: (function() {
-			var canvas = document.getElementById('canvas');
+			const canvas = document.getElementById('canvas');
 
 			// As a default initial behavior, pop up an alert when webgl context is lost. To make your
 			// application robust, you may want to override this behavior before shipping!
@@ -218,7 +198,7 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 			if (total > 1 && current > 0) {
 				progressElement.value = current/total*100;
 			}
-			statusElement.innerHTML = text;
+			statusElement.textContent = text;
 		},
 		totalDependencies: 0,
 		monitorRunDependencies: function(left) {
@@ -240,7 +220,7 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 	<!-- The code below is mainly changes made specifically for the Playground. -->
 	<script src="../js/detectMobile.js"></script>
 	<script>
-		var isMobileDevice = window.isMobile();
+		const isMobileDevice = window.isMobile();
 		// Start loading the Playground HTML5 application.
 		function startLoading() {
 			parent.relaunchOnMobile = false;
@@ -249,26 +229,26 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 			Module.setStatus('Loading Playground...', 0, 0);
 
 			Module.locateFile = function (path) { return Module.hasOwnProperty(path) ? Module[path] : path; }
-			var xml = new XMLHttpRequest();
+			const xml = new XMLHttpRequest();
 			xml.onreadystatechange = function () {
 			switch (this.readyState) {
 				case XMLHttpRequest.DONE:     // val=4
 					if (this.status == 200 && this.response) {
 						Module.setStatus('Unpacking...', 0, 0);
-						var compressed = new Uint8Array(this.response);
-						var unzip = new Zlib.Unzip(compressed);
-						var filenames = unzip.getFilenames();
-						for (var i = 0; i < filenames.length; i++) {
-							var uncompressed = unzip.decompress(filenames[i]);
-							if (filenames[i].indexOf('.js') > 0) {
-								var blob = new Blob([uncompressed], { type: "application/javascript" });
-								var url = URL.createObjectURL(blob);
-								var app = document.createElement('script');
+						const compressed = new Uint8Array(this.response);
+						const unzip = new Zlib.Unzip(compressed);
+						const filenames = unzip.getFilenames();
+						for (let i = 0; i < filenames.length; i++) {
+							const uncompressed = unzip.decompress(filenames[i]);
+							if (filenames[i].endsWith('.js')) {
+								const blob = new Blob([uncompressed], { type: "application/javascript" });
+								const url = URL.createObjectURL(blob);
+								const app = document.createElement('script');
 								app.setAttribute('src', url);
 								document.head.appendChild(app);
-							} else if (filenames[i].indexOf('.wasm') > 0) {
-								var blob = new Blob([uncompressed], { type: "application/wasm" });
-								var url = URL.createObjectURL(blob);
+							} else if (filenames[i].endsWith('.wasm')) {
+								const blob = new Blob([uncompressed], { type: "application/wasm" });
+								const url = URL.createObjectURL(blob);
 								Module[filenames[i]] = url;		// save blob for locateFile
 							}
 						}
@@ -290,11 +270,12 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 		}, true );
 		// Prevent arrow keys from scrolling the website (since the app may use them as controls).
 		window.addEventListener("keydown", function(event) {
-			if (["ArrowLeft","ArrowUp","ArrowRight","ArrowDown"].indexOf(event.key) > -1 || (event.keyCode !== undefined && [37, 38, 39, 40].indexOf(event.keyCode))) {
+			if (["ArrowLeft","ArrowUp","ArrowRight","ArrowDown"].indexOf(event.key) > -1 || (event.keyCode !== undefined && [37, 38, 39, 40].indexOf(event.keyCode) > -1)) {
 				event.preventDefault();
 			}
 		}, false );
 
+		// Must be var so it's accessible to the parent page via contentWindow.
 		var playgroundApp = document;
 
 		window.addEventListener("keyup", function(event) {

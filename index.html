@@ -99,7 +99,7 @@
 
 				<div class="column-right">
 					<div id="app" class="iframe-container">
-						<iframe id="app-frame" scrolling="no" src="app/index.html"></iframe>
+						<iframe id="app-frame" scrolling="no" src="solar2d/bin/index.html"></iframe>
 						<button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>
 					</div>
 				</div>
@@ -169,7 +169,7 @@
 						} else {
 							hasPlaygroundCrashed = true;
 						}
-						document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="app/index.html"></iframe><button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>';
+						document.getElementById('app').innerHTML = '<iframe scrolling="no" id="app-frame" src="solar2d/bin/index.html"></iframe><button id="startButton" onclick="manualStart()" class="load hidden">Start Solar2D Playground</button>';
 						if (hasPlaygroundCrashed) {
 							startButton = document.getElementById("startButton");
 							startButton.classList.remove("hidden");

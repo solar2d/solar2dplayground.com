@@ -195,10 +195,13 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 			// If the Playground encounters an error, it's possible that due to the nature of HTML5 builds,
 			// it'll keep throwing the same error endlessly, so it is safer to just restart the Playground.
 			if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-			if (0) { // XXX disabled for safety typeof dump == 'function') {
-				dump(text + '\n'); // fast, straight to the real console
-			} else {
-				if (typeof(text) === "string" && text.toUpperCase().indexOf("ERROR") >= 0) parent.restartPlayground(text);
+			if (typeof(text) === "string" && text.toUpperCase().indexOf("ERROR") >= 0) {
+				// If the app is running inside an iframe, then the Playground handles the error logging.
+				if ( window.location === window.parent.location ) {
+					console.error(text);
+				} else {
+					parent.restartPlayground(text);
+				}
 			}
 		},
 		canvas: (function() {
@@ -313,11 +316,6 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 			}
 		}, false );
 
-		// If the app isn't run within Iframe, then return to the main page.
-		if ( window.location === window.parent.location ) {
-			var url = "https://" + window.location.hostname;
-			window.location.replace(url);
-		}
 		// If non-mobile device, then start the Playground automatically.
 		if (!isMobileDevice && !parent.hasPlaygroundCrashed || parent.relaunchOnMobile) { startLoading() }
 	</script>

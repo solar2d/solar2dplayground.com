@@ -28,6 +28,10 @@ footer {
     margin: 0px auto;
 }
 
+footer p {
+    line-height: 2;
+}
+
 p {
     font-family: 'Roboto', sans-serif;
     line-height: 1.4;
@@ -226,7 +230,7 @@ button.load:hover {
     opacity: 0.3;
 }
 
-#line {
+.line {
     height: 1px;
     width: 100%;
     background: #282a36;
@@ -235,6 +239,13 @@ button.load:hover {
 
 .hidden {
     display: none;
+}
+
+.disclaimer-visible {
+    padding: 20px;
+    margin: 0;
+    background: #d10000;
+    color: white;
 }
 
 .panel {

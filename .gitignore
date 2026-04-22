@@ -1,14 +1,38 @@
-# Solar2D & tools:
+# Solar2D
 .CoronaLiveBuild
-.vscode
-*.tiled-session
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+
 # Hidden temporary files, e.g. MS Office.
 ~$*
-# OS files:
+
+# OS files
 Thumbs.db
 ._*
-*.ini
 .DS_Store
 .DS_Store?
 .Spotlight-V100
 .Trashes
+
+# Backup files
+*.backup
+*.bak
+
+# Misc
+*.ini

@@ -332,7 +332,7 @@ end
 logo = display.newImageRect( groupButtons, "ui/logo.png", 640, 110 )
 logo.x, logo.y = 480, 320
 
-if environment ~= "simulator" then
+if environment == "browser" then
     inputCode.addEventListener( projectListener )
     -- Output a Solar2D Playground & Solar2D version info to browser console.
     versionInfo.output( system.getInfo( "build" ) )
